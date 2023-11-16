@@ -4,7 +4,7 @@
 
 - 設計模式（Design Patterns）是在軟體工程中常見的解決特定問題的模板。它們是已經被證明有效的解決方案，可以用於解決在設計應用程式或系統時可能遇到的特定設計問題。設計模式可以提高開發人員的效率，因為它們提供了一種可重用和可理解的方式來解決常見問題。
 - 設計模式的七大原則
-  - 單一職責原則（Single Responsibility Principle, SRP）：一個類應該只有一個改變的原因。這意味著一個類應該只負責一項職責。
+  - 單一職責原則（Single Responsibility Principle, SRP）：一個類或方法應該只負責一項職責。
     ![Alt text](image-1.png)
   - 開放封閉原則（Open-Closed Principle, OCP）：軟體實體（類、模組、函數等等）應該對擴展開放，對修改封閉。就是說如果你有需要改變一個類別的行為，你應該藉由擴展(程式碼)，而非修改(程式碼)。
     - 範例1: 如果我想要用這個方法來計算圓形的面積，我必須要修改AreaCalculator的程式碼，這樣就違反了開放封閉原則。
@@ -50,7 +50,7 @@
         }
         ```
     ![Alt text](image-2.png)
-  - 里氏替換原則（Liskov Substitution Principle, LSP）：如果一個程序使用一個基類的地方，都可以使用其子類，而且不產生任何錯誤或異常，同時保持原有的功能和行為。
+  - 里氏替換原則（Liskov Substitution Principle, LSP）：子類別必須能夠替換他們的父類別。也就是說，軟體中的對象應該是可以在不改變程式正確性的前提下被他們的子類別所替換的。
     ![Alt text](image-3.png)
     - 範例1: 如果使用以下的程式碼，我的鳥類有麻雀與企鵝，麻雀飛行不會有錯誤，但是企鵝飛行會有錯誤，因此不符合里氏替換原則。
         ```java
@@ -84,8 +84,10 @@
   - 依賴倒置原則（Dependency Inversion Principle, DIP）：高層模組不應該依賴於低層模組，兩者都應該依賴於抽象。抽象不應該依賴於細節，細節應該依賴於抽象。
     - 範例1: ElectricPowerSwitch直接依賴於LightBulb，會導致當我們想要使用電燈泡以外的裝置時，必須要修改ElectricPowerSwitch的程式碼，這樣就違反了依賴倒置原則。
         ```java
+        // 低層模組
         class LightBulb {}
 
+        // 高層模組
         class ElectricPowerSwitch {
             private LightBulb lightBulb;
 
@@ -129,7 +131,7 @@
         ```
         - My experience
           - 實際上，過去的專案中，經常有出現很多類別並沒有實作任何interface，因為很多類別並沒有很明確的擴張需求，那我們還需要硬多做一個interface嗎？
-  - 介面隔離原則（Interface Segregation Principle, ISP）：客戶端不應該被迫依賴於它不使用的接口。
+  - 介面隔離原則（Interface Segregation Principle, ISP）：子類別不應該被強迫實作他們不會使用的方法。一個類別應該僅有它需要使用的方法，也就是說，介面應該是子類別所需要的，而不是一個臃腫不堪的介面。
     ![Alt text](image-4.png)
     - 範例1: 如果我的worker有一個人類一個機器人，而機器人並不需要eat方法，但是因為worker有eat方法，因此機器人也必須實作eat方法，這樣就違反了介面隔離原則。
         ```java
@@ -191,7 +193,7 @@
             }
         }
         ```
-  - 合成/聚合復用原則（Composition/Aggregation Reuse Principle, CARP）：儘量使用對象組合/聚合，而不是繼承來達到軟體復用的目的。
+  - 合成/聚合復用原則（Composition/Aggregation Reuse Principle, CARP）：儘量使用物件的組合/聚合，而不是繼承來達到軟體復用的目的。
     - 範例1: Car類繼承了Engine類來使用其start方法。這種方式的問題在於，如果Engine類的實現改變，可能會影響到Car類。此外，這種設計也違反了現實世界的模型，因為汽車並不是引擎，汽車有引擎。
     ```java
     class Engine {
@@ -322,7 +324,7 @@
 
 #### 單例模式（Singleton）
 
-- 單例模式是一種創建型模式，它提供了一種創建對象的最佳方式。這種模式涉及到單一個類，該類負責創建自己的對象，同時確保只有單個對象被創建。這個類提供了一個方法，可以直接獲取到它的唯一對象。該類創建的對象，稱為單例對象。
+- 單例模式是一種創建型模式，它提供了一種創建物件的最佳方式。這種模式涉及到單一個類別，該類別負責創建自己的實例，同時確保只有單個實例被創建。這個類提供了一個方法，可以直接獲取到它的唯一實例。該類別創建的實例，稱為單例對象
 - 精神
   - 確保一個類只有一個實例：透過隱藏構造函數並提供一個全局訪問點來實現。
   - 提供一個全局訪問點：透過一個公共的靜態方法來實現，該方法返回該類的唯一實例。
@@ -466,7 +468,7 @@
         }
     }
   ```
-  - 靜態內部類(推薦使用): 在第一次調用getInstance方法時才進行實例化，避免了餓漢式的內存浪費問題，並且使用靜態內部類來實現延遲實例化，同時保證了線程安全。
+  - 靜態內部類(推薦使用): 在第一次調用getInstance方法時才進行實例化，避免了餓漢式的內存浪費問題，並且使用靜態內部類來實現延遲實例化，同時藉由JVM的類加載機制來保證線程安全。因為靜態內部類只會被加載一次，因此在加載時，會保證線程安全。
   ```java
     public class Singleton {
         private Singleton() {}
@@ -751,45 +753,46 @@
   - 當一個系統需要獨立於其產品的創建、組合和表示時。
   - 當一個對象的狀態變化達到某一個閾值時，可以將其當作原型進行複製。
 - 優點
-  - 提供了一種將實例化的邏輯封裝在具體的原型類中的方式，這使得客戶端代碼可以與具體類的實例化邏輯解耦。
-  - 提供了一種添加新產品的方式，只需要定義一個實現了複製方法的新類即可。
+  - 效能優化：原型模式可以避免創建一個對象需要的昂貴的創建過程（如：資源的初始化、資料庫的讀取等）。
+  - 動態添加和删除：原型模式可以在運行時動態地添加或删除產品。
+  - 增加或減少產品類：原型模式可以增加或減少產品類。
+  - 配置方便：可以在運行時由客戶端動態地指定“克隆體”。
 - 缺點
-  - 可能會導致代碼的複雜性增加，因為每增加一種產品，就需要增加一個具體的原型類。
+  - 複製複雜對象：對於複雜對象的複製可能會相當困難，特別是當對象之間存在著復雜的引用關係時。
+  - 深拷貝與淺拷貝問題：深拷貝與淺拷貝問題是開發人員需要注意的問題，不注意這個問題可能會導致程式行為上的錯誤。
+  - 每增加一種產品，就需要增加一個具體的原型類：這會導致代碼的複雜性增加。
 - Example in java    
     ```java  
-    public abstract class Prototype implements Cloneable {
-        public abstract void show();
+    abstract class Prototype implements Cloneable {
+        abstract Prototype clone() throws CloneNotSupportedException;
+    }
+
+    class ConcretePrototype extends Prototype {
+        private String field;
+
+        ConcretePrototype(String field) {
+            this.field = field;
+        }
 
         @Override
-        protected Object clone() throws CloneNotSupportedException {
-            return super.clone();
+        Prototype clone() throws CloneNotSupportedException {
+            return (ConcretePrototype) super.clone();
+        }
+
+        @Override
+        public String toString() {
+            return field;
         }
     }
 
-    public class ConcretePrototype1 extends Prototype {
-        @Override
-        public void show() {
-            System.out.println("ConcretePrototype1 show");
-        }
-    }
-
-    public class ConcretePrototype2 extends Prototype {
-        @Override
-        public void show() {
-            System.out.println("ConcretePrototype2 show");
-        }
-    }
-
-    public class Client {
+    public class Main {
         public static void main(String[] args) {
             try {
-                Prototype prototype1 = new ConcretePrototype1();
-                Prototype clonePrototype1 = (Prototype) prototype1.clone();
-                clonePrototype1.show();
+                ConcretePrototype original = new ConcretePrototype("original");
+                System.out.println("Original instance: " + original);
 
-                Prototype prototype2 = new ConcretePrototype2();
-                Prototype clonePrototype2 = (Prototype) prototype2.clone();
-                clonePrototype2.show();
+                ConcretePrototype cloned = original.clone();
+                System.out.println("Cloned instance: " + cloned);
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
             }
@@ -797,16 +800,89 @@
     }
     ```
 
+#### 建造者模式（Builder）
+
+- 主要用於構建複雜對象。它將一個複雜對象的構建與其表示分離，使得同樣的構建過程可以創建不同的表示。建造者模式通常包含以下四個主要元素：
+  - 產品（Product）：這是我們想要創建的複雜對象。
+  - 建造者（Builder）：這是一個抽象接口，定義了創建產品對象的步驟。
+  - 具體建造者（Concrete Builder）：這是實現Builder接口的類，實現了具體的建造過程。
+  - 指導者（Director）：這是一個類，它擁有一個Builder對象，並通過這個Builder對象來構建產品。
+- 使用時機
+  - 當創建複雜對象的算法應該獨立於該對象的組件以及它們的裝配方式時。建造者模式可以提供更好的控制過程。
+  - 當構建過程必須允許被構建的對象有不同的表示時。在建造者模式中，使用相同的構建過程可以創建不同的產品。
+  - 當需要生成的對象具有複雜的內部結構，這些對象內部的組件之間存在著特定的生成順序。一個簡單的例子可能是創建一個簡單的HTML頁面，也可能是創建複雜的組合模式或者其他複雜的對象。
+  - 當要在某個時間點創建一個對象，然後在稍後的時間點再編輯該對象。建造者模式可以提供一種方法來編輯已經創建的對象。
+- 優點
+  - 封裝性好：客戶端不需要知道具體的創建過程，只需要通過導演類來獲得需要的對象。
+  - 擴展性好：如果需要創建的對象有新的類型，只需要擴展一個新的建造者就可以了。
+  - 更好的控制細節：建造者模式可以更精細地控制產品的創建過程。例如，產品的創建可能需要多個步驟，這些步驟可能需要在特定的順序中執行。
+- 缺點
+  - 建造者模式的主要缺點是由於它包含了很多的細節，所以如果建造者內部變化的話，客戶端的代碼也需要進行修改。
+  - 建造者模式會導致設計變得更加複雜，因為每個具體的建造者都需要實現相對應的方法來構建產品的各個部分。
+- Example in java
+  ```java
+  public class Product {
+        private String partA;
+        private String partB;
+
+        public void setPartA(String partA) {
+            this.partA = partA;
+        }
+
+        public void setPartB(String partB) {
+            this.partB = partB;
+        }
+
+        public void show() {
+            // Show the product
+        }
+    }
+
+    public abstract class Builder {
+        protected Product product = new Product();
+
+        public abstract void buildPartA();
+        public abstract void buildPartB();
+
+        public Product getResult() {
+            return product;
+        }
+    }
+
+    public class ConcreteBuilder extends Builder {
+        public void buildPartA() {
+            product.setPartA("Part A");
+        }
+
+        public void buildPartB() {
+            product.setPartB("Part B");
+        }
+    }
+
+    public class Director {
+        public void construct(Builder builder) {
+            builder.buildPartA();
+            builder.buildPartB();
+        }
+    }
+
+    public class Main {
+        public static void main(String[] args) {
+            // 指導者
+            Director director = new Director();
+            // 建造者 = 具體建造者
+            Builder builder = new ConcreteBuilder();
+            director.construct(builder);
+            // 產品
+            Product product = builder.getResult();
+            product.show();
+        }
+    }
+  ```
 
 
-
-
-
-
-
-
-
-
+class(類別)是用來定義object(物件)
+一個object就是某個class的instance(實例)
 
 
 ![Alt text](image-6.png)
