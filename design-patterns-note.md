@@ -880,6 +880,90 @@
     }
   ```
 
+### 結構型模式（Structural Patterns）
+
+- 結構型模式涉及到如何組合類和物件以形成更大的結構。結構型模式可以分為類結構型模式和物件結構型模式。類結構型模式使用繼承關係來組合類，物件結構型模式使用物件組合來組合物件。
+
+#### 適配器模式（Adapter）
+
+- 使兩個不兼容的接口能夠一起工作。這主要通過創建一個可以包裝不兼容對象的新接口來實現。
+- 使用時機
+  - 當你想使用一個已經存在的類，但是它的接口不符合你的需求。
+  - 當你想創建一個可以與未來未知的類（即那些接口可能不一定兼容的類）協同工作的類。
+  - 當你需要使用多個已經存在的子類，但是它們的接口不一致，並且你不能對它們進行修改。
+- 優點
+- 缺點
+- Example in java
+    ```java
+    // 假設這是我們已有的、且不能修改的接口
+    interface OldInterface {
+        void oldMethod();
+    }
+
+    // 這是我們已有的實現，我們不能直接使用它
+    class OldImplementation implements OldInterface {
+        public void oldMethod() {
+            System.out.println("Old method");
+        }
+    }
+
+    // 這是我們期望的新接口
+    interface NewInterface {
+        void newMethod();
+    }
+
+    // 這是我們的適配器，它將新接口轉換為我們可以使用的形式
+    class Adapter implements NewInterface {
+        private OldInterface oldImplementation;
+
+        public Adapter(OldInterface oldImplementation) {
+            this.oldImplementation = oldImplementation;
+        }
+
+        public void newMethod() {
+            oldImplementation.oldMethod();
+        }
+    }
+
+    // 這是我們的客戶端代碼，它只知道新接口
+    public class Client {
+        public static void main(String[] args) {
+            OldInterface oldImplementation = new OldImplementation();
+            NewInterface adapter = new Adapter(oldImplementation);
+            adapter.newMethod();  // 輸出：Old method
+        }
+    }    
+    ```
+
+#### 橋接模式（Bridge）
+
+
+
+#### 組合模式（Composite）
+
+
+
+#### 裝飾者模式（Decorator）
+
+
+
+#### 外觀模式（Facade）
+
+
+
+#### 享元模式（Flyweight）
+
+
+
+#### 代理模式（Proxy）
+
+
+
+
+
+
+
+
 
 class(類別)是用來定義object(物件)
 一個object就是某個class的instance(實例)
