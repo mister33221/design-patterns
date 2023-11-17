@@ -81,56 +81,6 @@
         class Penguin extends Bird {
         }
         ```
-  - 依賴倒置原則（Dependency Inversion Principle, DIP）：高層模組不應該依賴於低層模組，兩者都應該依賴於抽象。抽象不應該依賴於細節，細節應該依賴於抽象。
-    - 範例1: ElectricPowerSwitch直接依賴於LightBulb，會導致當我們想要使用電燈泡以外的裝置時，必須要修改ElectricPowerSwitch的程式碼，這樣就違反了依賴倒置原則。
-        ```java
-        // 低層模組
-        class LightBulb {}
-
-        // 高層模組
-        class ElectricPowerSwitch {
-            private LightBulb lightBulb;
-
-            public ElectricPowerSwitch(LightBulb lightBulb) {
-                this.lightBulb = lightBulb;
-            }
-
-            public void press() {
-                // Switch on/off the light bulb
-            }
-        }
-        ```
-    - 範例2: 為了遵守依賴倒置原則，我們建立一個interface，並且讓LightBulb與ElectricPowerSwitch分別實作這個interface，這樣就可以讓ElectricPowerSwitch不需要直接依賴於LightBulb。
-        ```java
-        interface Switchable {
-            void turnOn();
-            void turnOff();
-        }
-
-        class LightBulb implements Switchable {
-            public void turnOn() {
-                System.out.println("LightBulb: Bulb turned on...");
-            }
-
-            public void turnOff() {
-                System.out.println("LightBulb: Bulb turned off...");
-            }
-        }
-
-        class ElectricPowerSwitch {
-            private Switchable device;
-
-            public ElectricPowerSwitch(Switchable device) {
-                this.device = device;
-            }
-
-            public void press() {
-                // Switch on/off the device
-            }
-        }
-        ```
-        - My experience
-          - 實際上，過去的專案中，經常有出現很多類別並沒有實作任何interface，因為很多類別並沒有很明確的擴張需求，那我們還需要硬多做一個interface嗎？
   - 介面隔離原則（Interface Segregation Principle, ISP）：子類別不應該被強迫實作他們不會使用的方法。一個類別應該僅有它需要使用的方法，也就是說，介面應該是子類別所需要的，而不是一個臃腫不堪的介面。
     ![Alt text](image-4.png)
     - 範例1: 如果我的worker有一個人類一個機器人，而機器人並不需要eat方法，但是因為worker有eat方法，因此機器人也必須實作eat方法，這樣就違反了介面隔離原則。
@@ -193,6 +143,57 @@
             }
         }
         ```
+  - 依賴倒置原則（Dependency Inversion Principle, DIP）：高層模組不應該依賴於低層模組，兩者都應該依賴於抽象。抽象不應該依賴於細節，細節應該依賴於抽象。
+    - 範例1: ElectricPowerSwitch直接依賴於LightBulb，會導致當我們想要使用電燈泡以外的裝置時，必須要修改ElectricPowerSwitch的程式碼，這樣就違反了依賴倒置原則。
+        ```java
+        // 低層模組
+        class LightBulb {}
+
+        // 高層模組
+        class ElectricPowerSwitch {
+            private LightBulb lightBulb;
+
+            public ElectricPowerSwitch(LightBulb lightBulb) {
+                this.lightBulb = lightBulb;
+            }
+
+            public void press() {
+                // Switch on/off the light bulb
+            }
+        }
+        ```
+    - 範例2: 為了遵守依賴倒置原則，我們建立一個interface，並且讓LightBulb與ElectricPowerSwitch分別實作這個interface，這樣就可以讓ElectricPowerSwitch不需要直接依賴於LightBulb。
+        ```java
+        interface Switchable {
+            void turnOn();
+            void turnOff();
+        }
+
+        class LightBulb implements Switchable {
+            public void turnOn() {
+                System.out.println("LightBulb: Bulb turned on...");
+            }
+
+            public void turnOff() {
+                System.out.println("LightBulb: Bulb turned off...");
+            }
+        }
+
+        class ElectricPowerSwitch {
+            private Switchable device;
+
+            public ElectricPowerSwitch(Switchable device) {
+                this.device = device;
+            }
+
+            public void press() {
+                // Switch on/off the device
+            }
+        }
+        ```
+        - My experience
+          - 實際上，過去的專案中，經常有出現很多類別並沒有interface，因為很多類別並沒有很明確的擴張需求，那我們還需要硬多做一個interface嗎？
+
   - 合成/聚合復用原則（Composition/Aggregation Reuse Principle, CARP）：儘量使用物件的組合/聚合，而不是繼承來達到軟體復用的目的。
     - 範例1: Car類繼承了Engine類來使用其start方法。這種方式的問題在於，如果Engine類的實現改變，可能會影響到Car類。此外，這種設計也違反了現實世界的模型，因為汽車並不是引擎，汽車有引擎。
     ```java
@@ -230,62 +231,55 @@
     - 而最少知識原則就試陌生朋友不應該出現在類別中。而盡量變成直接朋友。
     - 範例1: 如果我想要獲取學生的宿舍地址，讓學生類去獲取宿舍地址，但是這樣就違反了最少知識原則，因為學生類並不需要知道宿舍類的存在。
         ```java
-        // 學生類
-        class Student {
-            private String name;
+        class Car {
+            Engine engine;
 
-            public Student(String name) {
-                this.name = name;
+            Car() {
+                engine = new Engine();
             }
 
-            // 學生直接訪問學生宿舍的信息
-            public void displayDormitoryInfo() {
-                Dormitory dormitory = new Dormitory();
-                System.out.println(name + " 宿舍地址: " + dormitory.getAddress());
+            void start() {
+                engine.start();
             }
         }
 
-        // 宿舍類
-        class Dormitory {
-            private String address;
-
-            public Dormitory() {
-                this.address = "123 Main St";
+        class Engine {
+            void start() {
+                // Start the engine
             }
-
-            public String getAddress() {
-                return address;
         }
-        
+
+        class Main {
+            public static void main(String[] args) {
+                Car car = new Car();
+                car.engine.start(); // Directly accessing the engine of the car
+            }
+        }
         ```
     - 範例2: 為了能夠符合最少知識原則，我們可以讓學生類透過宿舍類獲取宿舍地址，這樣就不需要讓學生類知道宿舍類的存在。
         ```java
-        // 學生類
-        class Student {
-            private String name;
-            private Dormitory dormitory;
+        class Car {
+            private Engine engine;
 
-            public Student(String name, Dormitory dormitory) {
-                this.name = name;
-                this.dormitory = dormitory;
+            Car() {
+                engine = new Engine();
             }
 
-            // 學生通過宿舍對象獲取宿舍信息
-            public void displayDormitoryInfo() {
-                System.out.println(name + " 宿舍地址: " + dormitory.getAddress());
+            void start() {
+                engine.start();
             }
         }
 
-        // 宿舍類
-        class Dormitory {
-            private String address;
-
-            public Dormitory(String address) {
-                this.address = address;
+        class Engine {
+            void start() {
+                // Start the engine
             }
+        }
 
-            public String getAddress() {
-                return address;
+        class Main {
+            public static void main(String[] args) {
+                Car car = new Car();
+                car.start(); // Using the car's start method
             }
         }
         ```
@@ -600,7 +594,7 @@
 
 #### 工廠方法模式（Factory Method）
 
-- 工廠方法模式是一種創建型模式，它提供了一種將實例化的邏輯封裝在一個方法中的方式。與簡單工廠模式不同的是，工廠方法模式使用繼承來改變實例化的邏輯，它解決了簡單工廠模式中工廠類職責過重的問題，也遵循了開閉原則。
+- 工廠方法模式是一種創建型模式，它提供了一種將實例化的邏輯封裝在一個方法中的方式。與簡單工廠模式不同的是，工廠方法模式使用繼承來改變實例化的邏輯，它解決了簡單工廠模式中工廠類職責過重的問題，也遵循了開閉原則。也可以說是當你要製造一個比較複查的產品時，使用簡單工廠會有工廠類職責過重的問題，那麼門就可以使用工廠方法類，有如在工廠中開了不同的產線，讓不同產線去製作不同的產品。
 - 精神
   - 封裝創建對象的邏輯：透過一個工廠類和一個工廠方法來實現。
   - 提供一個全局訪問點：透過一個公共的方法來實現，該方法由子類實現，以創建具體的對象。
@@ -763,39 +757,63 @@
   - 每增加一種產品，就需要增加一個具體的原型類：這會導致代碼的複雜性增加。
 - Example in java    
     ```java  
-    abstract class Prototype implements Cloneable {
-        abstract Prototype clone() throws CloneNotSupportedException;
-    }
+    class Prototype implements Cloneable {
+        List<String> list;
 
-    class ConcretePrototype extends Prototype {
-        private String field;
-
-        ConcretePrototype(String field) {
-            this.field = field;
+        public Prototype() {
+            list = new ArrayList<>();
         }
 
-        @Override
-        Prototype clone() throws CloneNotSupportedException {
-            return (ConcretePrototype) super.clone();
+        public Prototype(List<String> list) {
+            this.list = list;
         }
 
+        public void addData(String s) {
+            list.add(s);
+        }
+
+        public List<String> getData() {
+            return list;
+        }
+
+        // Implementing shallow copy
         @Override
-        public String toString() {
-            return field;
+        public Object clone() throws CloneNotSupportedException {
+            return super.clone();
+        }
+
+        // Implementing deep copy
+        public Prototype deepCopy() {
+            List<String> newList = new ArrayList<>(this.list);
+            return new Prototype(newList);
         }
     }
 
     public class Main {
-        public static void main(String[] args) {
-            try {
-                ConcretePrototype original = new ConcretePrototype("original");
-                System.out.println("Original instance: " + original);
+        public static void main(String[] args) throws CloneNotSupportedException {
+            Prototype prototype = new Prototype();
+            prototype.addData("Data 1");
+            prototype.addData("Data 2");
 
-                ConcretePrototype cloned = original.clone();
-                System.out.println("Cloned instance: " + cloned);
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-            }
+            System.out.println("--------------------------");
+
+            Prototype shallowCopy = (Prototype) prototype.clone();
+            System.out.println("Prototype list == Shallow copy list: " + (prototype.list == shallowCopy.list));
+            System.out.println("--------------------------");
+
+            Prototype deepCopy = prototype.deepCopy();
+            System.out.println("Prototype list == Deep copy list: " + (prototype.list == deepCopy.list));
+            System.out.println("--------------------------");
+
+            System.out.println("Original object data: " + prototype.getData());
+            System.out.println("Shallow copy data: " + shallowCopy.getData());
+            System.out.println("Deep copy data: " + deepCopy.getData());
+            System.out.println("--------------------------");
+
+            prototype.addData("Data 3");
+            System.out.println("Original object data after modification: " + prototype.getData());
+            System.out.println("Shallow copy data after original is modified: " + shallowCopy.getData());
+            System.out.println("Deep copy data after original is modified: " + deepCopy.getData());
         }
     }
     ```
@@ -821,7 +839,7 @@
   - 建造者模式會導致設計變得更加複雜，因為每個具體的建造者都需要實現相對應的方法來構建產品的各個部分。
 - Example in java
   ```java
-  public class Product {
+    public class Product {
         private String partA;
         private String partB;
 
