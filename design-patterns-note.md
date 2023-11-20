@@ -909,8 +909,6 @@
   - 當你想使用一個已經存在的類，但是它的接口不符合你的需求。
   - 當你想創建一個可以與未來未知的類（即那些接口可能不一定兼容的類）協同工作的類。
   - 當你需要使用多個已經存在的子類，但是它們的接口不一致，並且你不能對它們進行修改。
-- 優點
-- 缺點
 - Example in java
     ```java
     // 假設這是我們已有的、且不能修改的接口
@@ -955,16 +953,214 @@
 
 #### 橋接模式（Bridge）
 
+- 抽象部分與其實現部分分離，使它們可以獨立地變化。這種模式涉及到一個接口作為橋接，使實體類的功能獨立於接口實現類。這兩種類型的類可以按照需求結構化。
+- 使用時機
+  - 當你想要避免永久性綁定抽象與實現時，可以使用橋接模式。這種情況可能是因為實現在運行時可能需要被選擇或者切換。
+  - 當類的抽象以及它的實現都應該可以通過生成子類來擴展。在這種情況下，橋接模式讓這兩者可以獨立擴展。
+  - 當一個類的抽象和實現需要有不同的變化範圍時，橋接模式也很有用。這種情況下，它將抽象和實現分離，使得它們可以各自獨立地變化。
+  - 當你有多個繼承樹結構，橋接模式可以用來讓它們解耦，並讓每個繼承樹結構可以獨立地變化。
+- Eaxmple in java
+  - 將忍者視為抽象部分，而他們的忍術（例如火之術、風之術）視為實現部分。在這種情況下，我們可以使用橋接模式來分離忍者和他們的忍術，使得忍者和忍術可以獨立地變化和擴展。
+    ```java
+    // 抽象化角色：忍者
+    interface Ninja {
+        void performJutsu();
+    }
 
+    // 實現化角色：忍術
+    interface Jutsu {
+        void execute();
+    }
+
+    // 擴充抽象化角色：火影忍者
+    class FireNinja implements Ninja {
+        private Jutsu jutsu;
+
+        public FireNinja(Jutsu jutsu) {
+            this.jutsu = jutsu;
+        }
+
+        public void performJutsu() {
+            System.out.print("火影忍者 ");
+            jutsu.execute();
+        }
+    }
+
+    // 具體實現化角色：火之術
+    class FireJutsu implements Jutsu {
+        public void execute() {
+            System.out.println("使用火之術");
+        }
+    }
+
+    // 具體實現化角色：風之術
+    class WindJutsu implements Jutsu {
+        public void execute() {
+            System.out.println("使用風之術");
+        }
+    }
+
+    // 客戶端代碼
+    public class Client {
+        public static void main(String[] args) {
+            Jutsu fireJutsu = new FireJutsu();
+            Ninja fireNinja = new FireNinja(fireJutsu);
+            fireNinja.performJutsu();
+
+            Jutsu windJutsu = new WindJutsu();
+            Ninja windNinja = new FireNinja(windJutsu);
+            windNinja.performJutsu();
+        }
+    }
+    ```
 
 #### 組合模式（Composite）
 
+- 將對象組合成樹形結構，並且能像使用獨立對象一樣使用它們。這種模式創建了一個包含自己對象組的類，該類提供了修改相同對象組的方式。
+- 組合模式的基本構造
+  - Component：組合中的對象聲明接口，在適當的情況下，實現所有類共有接口的默認行為。聲明一個接口用於訪問和管理 Component 的子部件。
+  - Leaf：在組合中表示子部件。Leaf 在組合中沒有子部件。
+  - Composite：定義有子部件的那些部件的行為。存儲子部件。
+- 使用時機
+  - 當你需要表示對象的部分-整體層次結構時。組合模式提供了一種方式來組織和操作這種結構。
+  - 當你希望客戶端可以忽略組合對象和單個對象之間的差異時。客戶端將對所有對象進行一致的處理。
+  - 當你想要在一個統一的抽象類中定義類（包含它們的方法），這些類代表了對象和對象的組合。
+- Example in java
+  Ninja 是一個接口，它定義了一個方法 showDetails()。IndividualNinja 是實現了 Ninja 接口的類，它是葉節點。NinjaTeam 也是實現了 Ninja 接口的類，但它是一個複合節點，它有一個 Ninja 對象的列表，並在 showDetails() 方法中調用每個 Ninja 的 showDetails() 方法。在客戶端代碼中，我們創建了三個 IndividualNinja 對象和一個 NinjaTeam 對象，然後將 IndividualNinja 對象添加到 NinjaTeam 的忍者列表中，最後調用 NinjaTeam 的 showDetails() 方法。
+  ```java
+    // Component
+    interface Ninja {
+        void showDetails();
+    }
 
+    // Leaf
+    class IndividualNinja implements Ninja {
+        private String name;
+
+        public IndividualNinja(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public void showDetails() {
+            System.out.println(name);
+        }
+    }
+
+    // Composite
+    class NinjaTeam implements Ninja {
+        private List<Ninja> ninjas = new ArrayList<>();
+
+        public void add(Ninja ninja) {
+            ninjas.add(ninja);
+        }
+
+        public void remove(Ninja ninja) {
+            ninjas.remove(ninja);
+        }
+
+        @Override
+        public void showDetails() {
+            for (Ninja ninja : ninjas) {
+                ninja.showDetails();
+            }
+        }
+    }
+
+    // Client
+    public class Client {
+        public static void main(String[] args) {
+            Ninja naruto = new IndividualNinja("Naruto");
+            Ninja sasuke = new IndividualNinja("Sasuke");
+            Ninja sakura = new IndividualNinja("Sakura");
+
+            NinjaTeam team7 = new NinjaTeam();
+            team7.add(naruto);
+            team7.add(sasuke);
+            team7.add(sakura);
+
+            team7.showDetails();
+        }
+    }  
+  ```
 
 #### 裝飾者模式（Decorator）
 
+- 讓我們在不修改原有對象結構的情況下，動態地給一個對象添加一些額外的職責。這種方式提供了比繼承更有彈性的替代方案。
+- 裝飾者模式通常包含這些元素
+  - Component(抽象組件): 這是我們要動態添加新行為的對象。
+  - Decorator(裝飾者): 這是一個包裝器，他包裝了Component，並且可以給他添加溪的行為與責任。
+  - ConcreateDecorator(具體裝飾者): 這些對象用於包裝Component，每一個具體裝飾者都可以添加一些新的行為或責任。
+- 使用時機
+  - 當你需要動態為對象添加職責時：裝飾者模式提供了一種靈活的方式來擴展對象的功能，而不需要創建大量的子類。
+  - 當你需要組合行為時：裝飾者模式允許你將行為分解為獨立的對象，然後你可以動態地組合這些對象來實現複雜的行為。
+  - 當你需要避免類爆炸時：如果一個類有很多獨立的維度，並且每一個維度都有多個選項，那麼使用繼承來實現這個類可能會導致類的數量爆炸。在這種情況下，你可以使用裝飾者模式來避免類爆炸。
+- Example in java
+  ```java
+    // 抽象組件：忍者
+    public interface Ninja {
+        String getAbilities();
+    }
 
+    // 具體組件：鳴人
+    public class Naruto implements Ninja {
+        @Override
+        public String getAbilities() {
+            return "Naruto: ";
+        }
+    }
 
+    // 抽象裝飾者：忍術
+    public abstract class Jutsu implements Ninja {
+        protected Ninja ninja;
+
+        public Jutsu(Ninja ninja) {
+            this.ninja = ninja;
+        }
+
+        @Override
+        public String getAbilities() {
+            return ninja.getAbilities();
+        }
+    }
+
+    // 具體裝飾者：影分身
+    public class ShadowClone extends Jutsu {
+        public ShadowClone(Ninja ninja) {
+            super(ninja);
+        }
+
+        @Override
+        public String getAbilities() {
+            return super.getAbilities() + "Shadow Clone, ";
+        }
+    }
+
+    // 具體裝飾者：螺旋丸
+    public class Rasengan extends Jutsu {
+        public Rasengan(Ninja ninja) {
+            super(ninja);
+        }
+
+        @Override
+        public String getAbilities() {
+            return super.getAbilities() + "Rasengan, ";
+        }
+    }
+
+    // 測試
+    public class Main {
+        public static void main(String[] args) {
+            Ninja naruto = new Naruto();
+            naruto = new ShadowClone(naruto);
+            naruto = new Rasengan(naruto);
+
+            System.out.println(naruto.getAbilities());
+        }
+    }  
+    // result
+    // Naruto: Shadow Clone, Rasengan,
+  ```
 #### 外觀模式（Facade）
 
 
