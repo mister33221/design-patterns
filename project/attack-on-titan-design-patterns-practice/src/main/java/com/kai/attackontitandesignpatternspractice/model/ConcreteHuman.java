@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kai.attackontitandesignpatternspractice.model.enums.BloodType;
 import com.kai.attackontitandesignpatternspractice.model.enums.TitanType;
 import com.kai.attackontitandesignpatternspractice.model.interfaces.Human;
-import com.kai.attackontitandesignpatternspractice.model.interfaces.State;
+import com.kai.attackontitandesignpatternspractice.model.state.interfaces.State;
 import com.kai.attackontitandesignpatternspractice.model.state.HumanState;
 import com.kai.attackontitandesignpatternspractice.model.state.TitanState;
 import lombok.AllArgsConstructor;

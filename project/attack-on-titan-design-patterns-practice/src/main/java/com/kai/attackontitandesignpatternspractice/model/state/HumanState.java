@@ -1,9 +1,9 @@
 package com.kai.attackontitandesignpatternspractice.model.state;
 
 import com.kai.attackontitandesignpatternspractice.model.ConcreteHuman;
-import com.kai.attackontitandesignpatternspractice.model.interfaces.AttackStrategy;
-import com.kai.attackontitandesignpatternspractice.model.interfaces.HumanAttackStrategy;
-import com.kai.attackontitandesignpatternspractice.model.interfaces.State;
+import com.kai.attackontitandesignpatternspractice.model.tragtegy.interfaces.AttackStrategy;
+import com.kai.attackontitandesignpatternspractice.model.tragtegy.interfaces.HumanAttackStrategy;
+import com.kai.attackontitandesignpatternspractice.model.state.interfaces.State;
 import com.kai.attackontitandesignpatternspractice.model.tragtegy.SwordHumanStrategy;
 import lombok.Data;
 

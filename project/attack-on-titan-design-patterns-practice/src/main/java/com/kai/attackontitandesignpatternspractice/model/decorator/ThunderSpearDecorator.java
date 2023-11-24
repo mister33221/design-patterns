@@ -1,6 +1,6 @@
 package com.kai.attackontitandesignpatternspractice.model.decorator;
 
-import com.kai.attackontitandesignpatternspractice.model.abstracts.HumanDecorator;
+import com.kai.attackontitandesignpatternspractice.model.decorator.abstracts.HumanDecorator;
 import com.kai.attackontitandesignpatternspractice.model.interfaces.Human;
 
 import java.util.UUID;

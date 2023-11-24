@@ -11,6 +11,7 @@ import com.kai.attackontitandesignpatternspractice.model.PureTitanArmy;
 import com.kai.attackontitandesignpatternspractice.model.decorator.ThunderSpearDecorator;
 import com.kai.attackontitandesignpatternspractice.model.decorator.VerticalManeuveringEquipmentDecorator;
 import com.kai.attackontitandesignpatternspractice.model.enums.TitanType;
+import com.kai.attackontitandesignpatternspractice.model.enums.TransformSignal;
 import com.kai.attackontitandesignpatternspractice.model.interfaces.Human;
 import com.kai.attackontitandesignpatternspractice.model.state.HumanState;
 import com.kai.attackontitandesignpatternspractice.model.tragtegy.BeastTitanShoutsStrategy;
@@ -28,7 +29,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/init")
-public class InitController {
+public class Controller {
 
 
     List<ConcreteHuman> concreteHumanList = new ArrayList<>();
@@ -144,7 +145,7 @@ public class InitController {
         System.out.println("All the Aldians have been dropped out from the plane to middle east army's territory");
 
 //        3. 使用狀態模式(State Pattern)讓吉克在巨人狀態下攻擊
-        beastTitan.transform("Titan");
+        beastTitan.transform(TransformSignal.TITAN.getValue());
 
 //        4. 使用策略模式(Strategy Pattern)讓吉克在巨人狀態下使用不同的攻擊策略
 //        strategy 1
@@ -158,7 +159,7 @@ public class InitController {
         System.out.println("Middle East navy has been defeated, the war is over");
 
 //        5. 使用狀態模式(State Pattern)讓吉克變回人類
-        beastTitan.transform("Human");
+        beastTitan.transform(TransformSignal.HUMAN.getValue());
 
         return "Beast Titan has finished his mission";
     }
@@ -187,13 +188,13 @@ public class InitController {
         }
 
 //        2. 吉克變成巨人
-        beastTitan.transform("Titan");
+        beastTitan.transform(TransformSignal.TITAN.getValue());
 //        3. 吉克使用吶喊技能，讓人類變成純潔巨人
         beastTitan.getState().setAttackStrategy(new BeastTitanShoutsStrategy());
         System.out.println(beastTitan.attack());
         PureTitanArmy pureTitanArmy = new PureTitanArmy();
         for(ConcreteHuman pureTitan : pureTitans) {
-            pureTitan.transform("Titan");
+            pureTitan.transform(TransformSignal.TITAN.getValue());
             pureTitan.getState().setAttackStrategy(new PureTitanRunStrategy());
             pureTitanArmy.addTitan(pureTitan);
         }

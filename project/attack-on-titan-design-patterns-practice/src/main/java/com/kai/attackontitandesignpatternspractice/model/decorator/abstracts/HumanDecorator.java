@@ -1,4 +1,4 @@
-package com.kai.attackontitandesignpatternspractice.model.abstracts;
+package com.kai.attackontitandesignpatternspractice.model.decorator.abstracts;
 
 import com.kai.attackontitandesignpatternspractice.model.interfaces.Human;
 
