@@ -2,6 +2,8 @@ package com.kai.attackontitandesignpatternspractice.model.enums;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 public enum TitanType {
 
@@ -24,12 +26,10 @@ public enum TitanType {
     }
 
     public static TitanType getTitanTypeByTypeNo(Integer typeNo) {
-        for (TitanType titanType : TitanType.values()) {
-            if (titanType.getTypeNo().equals(typeNo)) {
-                return titanType;
-            }
-        }
-        return null;
+        return Arrays.stream(TitanType.values())
+                .filter(titanType -> titanType.getTypeNo().equals(typeNo))
+                .findFirst()
+                .orElse(null);
     }
 
 }

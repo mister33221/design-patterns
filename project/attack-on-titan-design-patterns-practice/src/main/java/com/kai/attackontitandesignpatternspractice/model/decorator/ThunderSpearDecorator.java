@@ -25,4 +25,9 @@ public class ThunderSpearDecorator extends HumanDecorator {
     public String getAbility() {
         return human.getAbility() + " + Thunder Spear";
     }
+
+    @Override
+    public String attack() {
+        return human.attack();
+    }
 }

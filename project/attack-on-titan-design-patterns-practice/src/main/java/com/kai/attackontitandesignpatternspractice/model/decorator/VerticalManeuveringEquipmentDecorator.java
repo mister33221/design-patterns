@@ -25,4 +25,9 @@ public class VerticalManeuveringEquipmentDecorator extends HumanDecorator {
     public String getAbility() {
         return human.getAbility() + " + Vertical Maneuvering Equipment";
     }
+
+    @Override
+    public String attack() {
+        return human.attack();
+    }
 }

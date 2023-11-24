@@ -7,5 +7,6 @@ public interface Human {
     UUID getUuid();
     String getName();
     String getAbility();
+    String attack();
 
 }

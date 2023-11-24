@@ -25,4 +25,9 @@ public class KnifeAbility extends HumanDecorator {
     public String getAbility() {
         return human.getAbility() + " + Knife";
     }
+
+    @Override
+    public String attack() {
+        return human.attack();
+    }
 }
