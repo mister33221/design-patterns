@@ -15,13 +15,21 @@ public enum TitanType {
     WAR_HAMMER_TITAN(8, "戰鎚巨人"),
     PURE_TITAN(9, "純種巨人");
 
-
     private final Integer typeNo;
     private final String typeName;
 
     TitanType(Integer typeNo, String typeName) {
         this.typeNo = typeNo;
         this.typeName = typeName;
+    }
+
+    public static TitanType getTitanTypeByTypeNo(Integer typeNo) {
+        for (TitanType titanType : TitanType.values()) {
+            if (titanType.getTypeNo().equals(typeNo)) {
+                return titanType;
+            }
+        }
+        return null;
     }
 
 }

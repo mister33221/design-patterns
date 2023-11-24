@@ -5,13 +5,14 @@ import com.kai.attackontitandesignpatternspractice.factory.factory.*;
 import com.kai.attackontitandesignpatternspractice.model.ConcreteTitan;
 import com.kai.attackontitandesignpatternspractice.model.decorator.*;
 import com.kai.attackontitandesignpatternspractice.model.enums.TitanType;
+import com.kai.attackontitandesignpatternspractice.model.interfaces.Human;
 import com.kai.attackontitandesignpatternspractice.model.interfaces.Titan;
 
 // 簡單工廠模式:工廠生產者
 //
 public class FactoryProducer {
 
-    public Titan getTitanFactory(TitanType titanType) throws CustomException {
+    public Titan createTitansByFactory(TitanType titanType) throws CustomException {
         switch (titanType.getTypeNo()) {
             case 1 -> {
                 return new FoundingTitanFactory().createTitan();
@@ -43,6 +44,17 @@ public class FactoryProducer {
             default -> throw new CustomException("No such titan type");
 
         }
+    }
+
+    public Human createHumansByFactory() {
+        return new HumanFactory().createHuman();
+    }
+
+    public Human createSpecificHumanByFactory(String name, String ability, String type) throws CustomException {
+        return new HumanFactory().createSpecificHuman(
+                name,
+                ability,
+                type == null ? null : Integer.parseInt(type));
     }
 
 }

@@ -2,6 +2,7 @@ package com.kai.attackontitandesignpatternspractice.model;
 
 import com.kai.attackontitandesignpatternspractice.model.enums.TitanType;
 import com.kai.attackontitandesignpatternspractice.model.interfaces.Titan;
+import com.kai.attackontitandesignpatternspractice.model.interfaces.TitanAttackStrategy;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,16 +24,11 @@ public class ConcreteTitan implements Titan {
     private TitanType type;
     private String ability;
     private int height;
-
-
-    @Override
-    public String getAbility() {
-        return ability;
-    }
+    private TitanAttackStrategy titanAttackStrategy;
 
     @Override
     public String attack() {
-        return null;
+        return titanAttackStrategy.attack();
     }
 
     @Override
@@ -40,15 +36,5 @@ public class ConcreteTitan implements Titan {
         return "My name is " + name + ".";
     }
 
-    @Override
-    public String toString() {
-        return "ConcreteTitan{" +
-                "uuid=" + uuid +
-                ", name='" + name + '\'' +
-                ", type=" + type +
-                ", ability='" + ability + '\'' +
-                ", height=" + height +
-                '}';
-    }
 
 }

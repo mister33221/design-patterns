@@ -5,9 +5,9 @@ import com.kai.attackontitandesignpatternspractice.model.interfaces.Human;
 
 import java.util.UUID;
 
-// 裝飾者模式:具體裝飾者ab1a
-public class KnifeAbility extends HumanDecorator {
-    public KnifeAbility(Human human) {
+// 裝飾者模式:具體裝飾者
+public class ThunderSpearDecorator extends HumanDecorator {
+    public ThunderSpearDecorator(Human human) {
         super(human);
     }
 
@@ -23,6 +23,6 @@ public class KnifeAbility extends HumanDecorator {
 
     @Override
     public String getAbility() {
-        return human.getAbility() + " + Knife";
+        return human.getAbility() + " + Thunder Spear";
     }
 }
