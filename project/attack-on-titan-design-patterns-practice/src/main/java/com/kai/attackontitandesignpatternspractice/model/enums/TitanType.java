@@ -15,7 +15,7 @@ public enum TitanType {
     ATTACK_TITAN(6, "進擊巨人"),
     CART_TITAN(7, "戰車巨人"),
     WAR_HAMMER_TITAN(8, "戰鎚巨人"),
-    PURE_TITAN(9, "純種巨人");
+    PURE_TITAN(9, "純潔巨人");
 
     private final Integer typeNo;
     private final String typeName;

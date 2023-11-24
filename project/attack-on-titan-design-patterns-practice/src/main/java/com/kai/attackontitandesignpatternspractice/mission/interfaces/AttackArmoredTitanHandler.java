@@ -1,6 +1,5 @@
 package com.kai.attackontitandesignpatternspractice.mission.interfaces;
 
-import com.kai.attackontitandesignpatternspractice.model.ConcreteHuman;
 import com.kai.attackontitandesignpatternspractice.model.interfaces.Human;
 
 import java.util.List;

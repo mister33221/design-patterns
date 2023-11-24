@@ -7,14 +7,21 @@ import com.kai.attackontitandesignpatternspractice.model.interfaces.Human;
 //
 public class FactoryProducer {
 
+    private static final HumanFactory humanFactory = new HumanFactory();
+
+
     public Human createHumansByFactory() {
-        return new HumanFactory().createHuman();
+        return humanFactory.createHuman();
     }
 
     public Human createSpecificHumanByFactory(String name, String ability) {
-        return new HumanFactory().createSpecificHuman(
+        return humanFactory.createSpecificHuman(
                 name,
                 ability);
+    }
+
+    public Human createNormalErdianHumanByFactory(String name) {
+        return humanFactory.createNormalErdianHuman(name);
     }
 
 }

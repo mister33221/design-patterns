@@ -6,7 +6,7 @@ import com.kai.attackontitandesignpatternspractice.model.interfaces.Human;
 
 import java.util.List;
 
-public class ConcreteHangeAttackArmoredTitanHandler implements AttackArmoredTitanHandler {
+public class ConcreteHanjiAttackArmoredTitanHandler implements AttackArmoredTitanHandler {
 
     private AttackArmoredTitanHandler nextHandler;
     @Override
@@ -17,7 +17,7 @@ public class ConcreteHangeAttackArmoredTitanHandler implements AttackArmoredTita
     @Override
     public void handleAttack(List<Human> decoratedHumans) {
         Human juman = decoratedHumans.stream()
-                .filter(decoratedHuman -> decoratedHuman.getName().equals("Hange"))
+                .filter(decoratedHuman -> decoratedHuman.getName().equals("Hanji"))
                 .findFirst()
                 .orElse(new ConcreteHuman());
         System.out.println(juman.getName() + " is attacking the Armored Titan");
