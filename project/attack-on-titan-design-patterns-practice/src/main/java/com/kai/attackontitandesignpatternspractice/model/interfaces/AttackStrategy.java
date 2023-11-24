@@ -1,4 +1,5 @@
 package com.kai.attackontitandesignpatternspractice.model.interfaces;
 
-public interface TitanAttackStrategy extends AttackStrategy {
+public interface AttackStrategy {
+    String attack();
 }

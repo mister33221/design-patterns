@@ -16,6 +16,7 @@ import com.kai.attackontitandesignpatternspractice.model.state.HumanState;
 import com.kai.attackontitandesignpatternspractice.model.state.TitanState;
 import com.kai.attackontitandesignpatternspractice.model.tragtegy.BeastTitanShoutsStrategy;
 import com.kai.attackontitandesignpatternspractice.model.tragtegy.BeastTitanThrowsStrategy;
+import com.kai.attackontitandesignpatternspractice.model.tragtegy.SwordHumanStrategy;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -142,12 +143,12 @@ public class InitController {
                                 .setBloodType(null)
                                 .setState(new HumanState())
                 );
-        beastTitan.setState(new TitanState());
+        beastTitan.transform("Titan");
         System.out.println(beastTitan.getName() + " is attacking Midde East");
         System.out.println("All the Aldians have been dropped out from the plane to middle east army's territory");
 
 //        strategy 1
-        beastTitan.getState()
+        beastTitan.getState().setAttackStrategy(new BeastTitanShoutsStrategy());
         System.out.println(beastTitan.attack());
         System.out.println("Middle East army has been defeated, the territory is now under Marley's control");
 
@@ -155,6 +156,9 @@ public class InitController {
         beastTitan.getState().setAttackStrategy(new BeastTitanThrowsStrategy());
         System.out.println(beastTitan.attack());
         System.out.println("Middle East navy has been defeated, the war is over");
+
+        beastTitan.transform("Human");
+        System.out.println(beastTitan.getName() + " " + beastTitan.attack());
 
         return "Beast Titan has finished his mission";
     }

@@ -5,6 +5,8 @@ import com.kai.attackontitandesignpatternspractice.model.enums.BloodType;
 import com.kai.attackontitandesignpatternspractice.model.enums.TitanType;
 import com.kai.attackontitandesignpatternspractice.model.interfaces.Human;
 import com.kai.attackontitandesignpatternspractice.model.interfaces.State;
+import com.kai.attackontitandesignpatternspractice.model.state.HumanState;
+import com.kai.attackontitandesignpatternspractice.model.state.TitanState;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,7 +34,15 @@ public class ConcreteHuman implements Human {
         return state.attack();
     }
 
-    public void transform() {
-        state.transform(this);
+    public void transform(String state) {
+        if (state.equals("Titan")) {
+            this.state = new TitanState();
+            this.state.transform(this);
+        } else if (state.equals("Human")) {
+            this.state = new HumanState();
+            this.state.transform(this);
+        } else {
+            throw new RuntimeException("Invalid state");
+        }
     }
 }

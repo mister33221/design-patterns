@@ -1,5 +1,6 @@
 package com.kai.attackontitandesignpatternspractice.model.tragtegy;
 
+
 import com.kai.attackontitandesignpatternspractice.model.interfaces.TitanAttackStrategy;
 
 public class BeastTitanThrowsStrategy implements TitanAttackStrategy {

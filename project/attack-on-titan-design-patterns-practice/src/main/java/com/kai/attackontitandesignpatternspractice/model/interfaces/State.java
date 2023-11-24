@@ -5,5 +5,5 @@ import com.kai.attackontitandesignpatternspractice.model.ConcreteHuman;
 public interface State {
     void transform(ConcreteHuman human);
     String attack();
-    void setAttackStrategy(TitanAttackStrategy attackStrategy);
+    void setAttackStrategy(AttackStrategy attackStrategy);
 }
