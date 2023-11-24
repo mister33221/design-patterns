@@ -11,9 +11,10 @@ import lombok.Data;
 public class HumanState implements State {
 
     private HumanAttackStrategy attackStrategy;
+
     @Override
     public void transform(ConcreteHuman human) {
-        System.out.println("I am turning into a human.");
+        System.out.println(human.getName() + " is turning into a human.");
         setAttackStrategy(new SwordHumanStrategy());
     }
 

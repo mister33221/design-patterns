@@ -128,7 +128,7 @@ public class InitController {
     }
 
     @PostMapping("/BeastTitanAttackMiddeEast")
-    @Operation(summary = "Beast Titan attack Midde East Using strategy pattern", tags = {"Mission"})
+    @Operation(summary = "Beast Titan attack Midde East Using state pattern to solve human and titan transform. Using strategy pattern to solve different attack strategy", tags = {"Mission"})
     public String BeastTitanAttackMiddeEast() {
 
         ConcreteHuman beastTitan = concreteHumanList.stream()

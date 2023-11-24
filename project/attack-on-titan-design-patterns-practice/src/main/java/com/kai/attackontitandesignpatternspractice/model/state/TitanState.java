@@ -13,7 +13,7 @@ public class TitanState implements State {
     private TitanAttackStrategy attackStrategy;
     @Override
     public void transform(ConcreteHuman human) {
-        System.out.println("I am turning into a titan.");
+        System.out.println(human.getName() + " is turning into a titan.");
     }
 
     @Override
