@@ -1822,9 +1822,79 @@
 #### 備忘錄模式（Memento）
 
 - 解決問題
+  - 當需要保存一個物件的某個狀態，以便在未來可以恢復到這個狀態時。
+  - 當直接訪問物件的獲取和設置狀態的操作可能會暴露物件的實現細節，導致物件的封裝性被破壞時。
 - 解決方式
+  - 備忘錄模式通過引入一個新的備忘錄物件來保存原始物件的內部狀態。這個備忘錄物件只有原始物件可以訪問，這樣就可以保護原始物件的封裝性。
+  - 當需要恢復到某個狀態時，原始物件可以使用備忘錄物件來恢復其內部狀態。
+  - 這種方式可以讓原始物件在不暴露其內部實現細節的情況下，保存和恢復其內部狀態。
+- 缺點
+  - 請注意，雖然備忘錄模式可以解決上述問題，但它也有一個主要的缺點，那就是如果需要保存的狀態數據很大，或者需要保存的狀態很多，則可能會消耗大量的記憶體。因此，當使用備忘錄模式時，應該小心確保記憶體的使用得到適當的管理。
 - 使用時機
-- Example in java
+  - 當需要保存一個物件的某個狀態，以便在未來可以恢復到這個狀態時。例如，如果你正在開發一個文字編輯器，你可能需要一種方式來保存用戶的編輯歷史，以便用戶可以撤銷和重做他們的操作。
+  - 當直接訪問物件的獲取和設置狀態的操作可能會暴露物件的實現細節，導致物件的封裝性被破壞時。在這種情況下，使用備忘錄模式可以讓你在不破壞物件封裝性的情況下保存和恢復物件的狀態。
+  - 當你需要創建一個可回滾的系統，即系統需要有能力回到某個特定的時間點。例如，如果你正在開發一個遊戲，你可能需要一種方式來保存遊戲的狀態，以便玩家可以回到他們之前的遊戲進度。
+- Example in java: "Ninja"類，它有一個內部狀態（例如，生命值），並且可以創建和恢復備忘錄；一個"NinjaMemento"類，它將保存"Ninja"的狀態；以及一個"NinjaCaretaker"類，它將負責保存和恢復備忘錄。"NinjaCaretaker"負責保存和恢復備忘錄，但它不能直接訪問備忘錄的內部狀態。這樣，我們就可以在不破壞"Ninja"封裝性的情況下保存和恢復其生命值。
+  ```java
+    // 備忘錄類
+    class NinjaMemento {
+        private int health;
+
+        public NinjaMemento(int health) {
+            this.health = health;
+        }
+
+        public int getSavedHealth() {
+            return health;
+        }
+    }
+
+    // 忍者類
+    class Ninja {
+        private int health;
+
+        public void setHealth(int health) {
+            this.health = health;
+        }
+
+        public NinjaMemento save() {
+            return new NinjaMemento(health);
+        }
+
+        public void restore(NinjaMemento memento) {
+            health = memento.getSavedHealth();
+        }
+    }
+
+    // 管理者類
+    class NinjaCaretaker {
+        private NinjaMemento memento;
+
+        public void saveMemento(NinjaMemento memento) {
+            this.memento = memento;
+        }
+
+        public NinjaMemento getMemento() {
+            return memento;
+        }
+    }
+
+    // 測試代碼
+    public class Main {
+        public static void main(String[] args) {
+            Ninja ninja = new Ninja();
+            NinjaCaretaker caretaker = new NinjaCaretaker();
+
+            ninja.setHealth(100);
+            caretaker.saveMemento(ninja.save());
+
+            ninja.setHealth(50);
+            ninja.restore(caretaker.getMemento());
+
+            System.out.println(ninja.getHealth());  // Output: 100
+        }
+    }  
+  ```
 
 #### 觀察者模式（Observer）
 
