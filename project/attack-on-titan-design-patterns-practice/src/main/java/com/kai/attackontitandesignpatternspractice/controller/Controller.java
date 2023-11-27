@@ -206,7 +206,7 @@ public class Controller {
     }
 
     @PostMapping("ErwinCommandTheScoutsRegimentToAttackBeastTitan")
-    @Operation(summary = "Erwom command the scouts regiment to attack beast titan by using command pattern", tags = {"Mission"})
+    @Operation(summary = "Erwin command the scouts regiment to attack beast titan by using command pattern", tags = {"Mission"})
     public void ErwomCommandTheSccoutsRegimentToAttackBeastTitan() {
 
 //        1. TODO 先暫時直接建立一個Erwin、一個Levi class，之後有空再改以現有的ConcreteHuman取代
