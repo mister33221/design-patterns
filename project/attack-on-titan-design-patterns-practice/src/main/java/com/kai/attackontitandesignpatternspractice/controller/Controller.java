@@ -94,7 +94,7 @@ public class Controller {
                 .toList();
 
         System.out.println("What equipment do we have?");
-        System.out.println(specialCorps.stream().map(Human::getAbility).reduce((a, b) -> a + ", " + b).get());
+        System.out.println(specialCorps.stream().map(Human::getAbility).reduce((a, b) -> a + ", " + b).orElse("No equipment"));
 
         List<Human> decoratedHumans = new ArrayList<>();
 
