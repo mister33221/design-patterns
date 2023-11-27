@@ -2128,10 +2128,83 @@
 
 #### 模板方法模式（Template Method）
 
-- 解決問題
+- 解決問題  
+  - 在某些情況下，我們有一個演算法，其中包含一系列固定的步驟，這些步驟的執行順序是固定的，但某些具體步驟的實現可能因為不同的情境或需求而有所不同。如果我們將整個演算法都硬編碼在一個類別中，那麼每當需要修改其中的某個步驟時，就需要修改整個類別，這樣的設計可能會讓代碼變得難以維護和擴展。
 - 解決方式
+  - 模板方法模式提供了一種結構化的方式，將演算法的骨架和具體步驟的實現分離，使得子類別可以重新定義演算法中的某些步驟而不改變演算法的整體結構。它通過定義一個模板方法，其中包含演算法的骨架，並將某些具體步驟的實現留給子類別去完成。
 - 使用時機
-- Example in java
+  - 定義一個演算法的骨架： 當一個演算法擁有固定的步驟，但某些具體步驟的實現可能因為不同的情境或需求而有所不同時，模板方法模式非常適用。它允許將演算法的骨架定義在一個抽象類別中，而將具體步驟的實現留給子類別。
+  - 避免代碼重複： 如果有多個相似的類別擁有相同的演算法骨架，但其中一些步驟的實現可能不同，模板方法模式可以幫助避免代碼重複，提高代碼的重用性。
+  - 提高代碼的可維護性： 將演算法的骨架和具體步驟分離，使得在修改演算法時只需修改抽象類別或其子類別的特定部分，而不影響整個演算法的結構。這有助於提高代碼的可維護性。
+  - 彈性擴展： 模板方法模式提供了一個框架，使得新的具體類別可以很容易地集成到現有的系統中，擴展演算法的功能。
+- Example in java: 將忍者的訓練過程視為一種模板方法。每個忍者的訓練過程都包括基本體能訓練、忍術學習和實戰演練，但具體的訓練內容可能會因忍者的種類（例如火影、水影）而異。NinjaTraining類別定義了訓練的模板，而具體的訓練內容則由其子類HokageTraining和MizukageTraining來完成。這就是模板方法模式的核心思想。
+  ```java
+    // 定義忍者訓練的模板
+    public abstract class NinjaTraining {
+        // 模板方法
+        public final void train() {
+            doPhysicalTraining();
+            learnJutsu();
+            doCombatDrill();
+        }
+
+        // 基本體能訓練
+        public void doPhysicalTraining() {
+            System.out.println("Doing physical training...");
+        }
+
+        // 忍術學習，具體由子類實現
+        public abstract void learnJutsu();
+
+        // 實戰演練，具體由子類實現
+        public abstract void doCombatDrill();
+    }
+
+    // 火影的訓練
+    public class HokageTraining extends NinjaTraining {
+        @Override
+        public void learnJutsu() {
+            System.out.println("Learning Fire Jutsu...");
+        }
+
+        @Override
+        public void doCombatDrill() {
+            System.out.println("Doing combat drill with Shadow Clone Jutsu...");
+        }
+    }
+
+    // 水影的訓練
+    public class MizukageTraining extends NinjaTraining {
+        @Override
+        public void learnJutsu() {
+            System.out.println("Learning Water Jutsu...");
+        }
+
+        @Override
+        public void doCombatDrill() {
+            System.out.println("Doing combat drill with Water Dragon Jutsu...");
+        }
+    }
+
+    // 測試模板方法模式
+    public class Main {
+        public static void main(String[] args) {
+            NinjaTraining hokageTraining = new HokageTraining();
+            hokageTraining.train();
+            // Output:
+            // Doing physical training...
+            // Learning Fire Jutsu...
+            // Doing combat drill with Shadow Clone Jutsu...
+
+            NinjaTraining mizukageTraining = new MizukageTraining();
+            mizukageTraining.train();
+            // Output:
+            // Doing physical training...
+            // Learning Water Jutsu...
+            // Doing combat drill with Water Dragon Jutsu...
+        }
+    }  
+  ```
 
 #### 訪問者模式（Visitor）
 
