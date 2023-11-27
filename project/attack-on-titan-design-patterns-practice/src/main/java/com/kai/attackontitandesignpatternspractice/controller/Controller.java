@@ -194,6 +194,7 @@ public class Controller {
         beastTitan.getState().setAttackStrategy(new BeastTitanShoutsStrategy());
         System.out.println(beastTitan.attack());
         PureTitanArmy pureTitanArmy = new PureTitanArmy();
+//        TODO: 這裡應該可以改成使用觀察者模式(Observer Pattern)來讓吉克的吶喊技能通知所有的人類變成純潔巨人
         for (ConcreteHuman pureTitan : pureTitans) {
             pureTitan.transform(TransformSignal.TITAN.getValue());
             pureTitan.getState().setAttackStrategy(new PureTitanRunStrategy());

@@ -1900,9 +1900,77 @@
 #### 觀察者模式（Observer）
 
 - 解決問題
+  - 當一個物件的狀態改變時，需要通知其他依賴於該物件的物件。
+  - 當物件之間的交互關係變得非常複雜，以至於難以理解或難以維護時。
 - 解決方式
+  - 觀察者模式通過引入一個觀察者列表來解決這些問題，該列表將包含所有依賴於目標物件的觀察者物件。
+  - 當目標物件的狀態改變時，它將通過遍歷觀察者列表來通知所有的觀察者。
+  - 這種方式可以讓目標物件和觀察者物件之間的關係變得更加簡單，並且可以獨立地改變它們之間的交互方式。
+  - 這種方式降低了物件之間的耦合度，使得物件更加獨立，並且更易於維護和理解。
+- 缺點
+  - 請注意，雖然觀察者模式可以解決上述問題，但它也有一個主要的缺點，那就是如果有大量的觀察者，或者觀察者的處理過程很耗時，則可能會導致目標物件的狀態改變的通知過程變得很慢。因此，當使用觀察者模式時，應該小心確保觀察者的數量和處理過程得到適當的管理。
 - 使用時機
-- Example in java
+- Example in java: 使用無限月讀當作事件，當無限月讀被激活或解除時，忍者們會收到通知。
+  ```java
+    // 觀察者接口
+    interface Observer {
+        void update(String status);
+    }
+
+    // 忍者類，作為觀察者
+    class Ninja implements Observer {
+        private String name;
+
+        public Ninja(String name) {
+            this.name = name;
+        }
+
+        public void update(String status) {
+            if(status.equals("The Infinite Tsukuyomi has been activated!")){
+                System.out.println("Ninja " + name + " received the update: " + status + ". " + name + " has fallen into illusion.");
+            } else if(status.equals("The Infinite Tsukuyomi has been released!")) {
+                System.out.println("Ninja " + name + " received the update: " + status + ". " + name + " has been released from illusion.");
+            }
+        }
+    }
+
+    // 無限月讀類，作為主題
+    class InfiniteTsukuyomi {
+        private List<Observer> observers = new ArrayList<>();
+        private String status;
+
+        public void addObserver(Observer observer) {
+            observers.add(observer);
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+            notifyAllObservers(status);
+        }
+
+        private void notifyAllObservers() {
+            for (Observer observer : observers) {
+                observer.update(status);
+            }
+        }
+    }
+
+    // 測試代碼
+    public class Main {
+        public static void main(String[] args) {
+            InfiniteTsukuyomi tsukuyomi = new InfiniteTsukuyomi();
+
+            Ninja naruto = new Ninja("Naruto");
+            Ninja sasuke = new Ninja("Sasuke");
+
+            tsukuyomi.addObserver(naruto);
+            tsukuyomi.addObserver(sasuke);
+
+            tsukuyomi.setStatus("The Infinite Tsukuyomi has been activated!");
+            tsukuyomi.setStatus("The Infinite Tsukuyomi has been released!");
+        }
+    }
+  ```
 
 #### 狀態模式（State）
 
