@@ -2209,10 +2209,63 @@
 #### 訪問者模式（Visitor）
 
 - 解決問題
+  - 在不修改已存在的類別結構的情況下，增加對這些類別的新操作。
 - 解決方式
+  - 定義一個訪問者介面，該介面有多個訪問方法，每個方法對應一種具體的元素類型。
+  - 每個元素類別都有一個接受訪問者的方法，該方法的參數是訪問者物件。
+  - 當訪問者物件呼叫元素的接受方法時，元素會將自己作為參數傳遞給訪問者的訪問方法，訪問者在該方法中實現對元素的操作。
 - 使用時機
+  - 操作複雜性：當一個物件結構包含許多類型的物件，並且需要對這些物件進行一系列複雜的操作時，可以使用訪問者模式。這樣可以將操作的實現與物件結構分離，使得增加新的操作不需要修改物件結構。
+  - 物件結構穩定：當一個物件結構的類型相對固定，不太可能增加新的類型時，可以使用訪問者模式。因為訪問者模式需要為每一種類型都提供一個訪問方法，如果物件結構的類型經常變化，則需要頻繁地修改訪問者介面，這會增加維護的難度。
+  - 需要跨越多個類別進行操作：當需要對一個物件結構中的多個不同類型的物件進行相關的操作時，可以使用訪問者模式。這樣可以將這些操作集中在一個訪問者物件中，而不是分散在各個物件的方法中。
 - Example in java
+    ```java
+    // 訪問者介面
+    interface NinjaVisitor {
+        void visit(Naruto naruto);
+        void visit(Sasuke sasuke);
+    }
 
+    // 具體的訪問者
+    class ConcreteNinjaVisitor implements NinjaVisitor {
+        public void visit(Naruto naruto) {
+            System.out.println("Visiting Naruto, he says: Dattebayo!");
+        }
+        public void visit(Sasuke sasuke) {
+            System.out.println("Visiting Sasuke, he says: I will restore my clan!");
+        }
+    }
+
+    // 忍者介面
+    interface Ninja {
+        void accept(NinjaVisitor visitor);
+    }
+
+    // 具體的忍者
+    class Naruto implements Ninja {
+        public void accept(NinjaVisitor visitor) {
+            visitor.visit(this);
+        }
+    }
+
+    class Sasuke implements Ninja {
+        public void accept(NinjaVisitor visitor) {
+            visitor.visit(this);
+        }
+    }
+
+    // 測試程式
+    public class Main {
+        public static void main(String[] args) {
+            NinjaVisitor visitor = new ConcreteNinjaVisitor();
+            Naruto naruto = new Naruto();
+            Sasuke sasuke = new Sasuke();
+
+            naruto.accept(visitor);
+            sasuke.accept(visitor);
+        }
+    }    
+    ```
 
 
 
