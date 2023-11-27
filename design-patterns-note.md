@@ -1708,34 +1708,158 @@
 
 #### 迭代器模式（Iterator）
 
-
+- 解決問題
+  - 用來解決對聚合物件（如陣列、列表等）的訪問問題。在不暴露其內部結構的情況下，可以對聚合物件進行遍歷操作。
+- 解決方式
+  - 提供一個接口（或者在某些語言中，是一個內建的機制），這個接口允許開發者在不需要了解或直接訪問聚合物件內部結構的情況下，進行遍歷操作。
+- 因為這個設計麼是好像有點太廢了......我就不寫了 ˊ_>ˋ
 
 #### 中介者模式（Mediator）
 
+- 解決問題
+  - 當物件之間的交互關係變得非常複雜，以至於難以理解或難以維護時。
+  - 當一個物件與多個其他物件有直接的交互關係，導致該物件與其他物件之間的耦合度過高時。
+- 解決方式
+  - 中介者模式通過引入一個新的中介者物件來解決這些問題，該物件將包含所有物件之間的交互邏輯。
+  - 其他所有物件將不再直接交互，而是通過中介者物件進行交互。這樣，物件之間的關係將變得更加簡單，並且可以獨立地改變它們之間的交互方式。
+  - 這種方式降低了物件之間的耦合度，使得物件更加獨立，並且更易於維護和理解。
+- 使用時機
+  - 當物件之間的交互關係變得非常複雜，以至於難以理解或難以維護時。在這種情況下，引入中介者可以將這些交互關係集中在一個地方，使得它們更容易被理解和維護。
+  - 當一個物件與多個其他物件有直接的交互關係，導致該物件與其他物件之間的耦合度過高時。在這種情況下，引入中介者可以降低物件之間的耦合度，使得物件更加獨立，並且更易於維護和理解。
+  - 當你需要創建多個物件類型並希望改變它們之間的交互方式時。在這種情況下，使用中介者模式可以讓你獨立地改變這些物件之間的交互方式，而不需要修改這些物件本身。
+- 缺點
+  - 中介者物件本身可能會變得非常複雜。因此，當使用中介者模式時，應該小心確保中介者物件的複雜度得到適當的管理。
+- Example in java: "火影"和"忍者"不直接通信，而是通過"忍者村"進行通信。當"火影"發送消息時，"忍者村"會將消息傳遞給"忍者"，反之亦然。這樣，我們就可以獨立地改變"火影"和"忍者"之間的交互方式，而不需要修改"火影"或"忍者"的代碼。
+  ```java
+    // 中介者接口
+    interface Mediator {
+        void send(String message, Participant sender);
+    }
 
+    // 參與者類
+    abstract class Participant {
+        protected Mediator mediator;
+
+        public Participant(Mediator mediator) {
+            this.mediator = mediator;
+        }
+
+        public abstract void send(String message);
+        public abstract void receive(String message);
+    }
+
+    // 忍者類
+    class Ninja extends Participant {
+        public Ninja(Mediator mediator) {
+            super(mediator);
+        }
+
+        public void send(String message) {
+            System.out.println("Ninja sends message: " + message);
+            mediator.send(message, this);
+        }
+
+        public void receive(String message) {
+            System.out.println("Ninja receives message: " + message);
+        }
+    }
+
+    // 火影類
+    class Hokage extends Participant {
+        public Hokage(Mediator mediator) {
+            super(mediator);
+        }
+
+        public void send(String message) {
+            System.out.println("Hokage sends message: " + message);
+            mediator.send(message, this);
+        }
+
+        public void receive(String message) {
+            System.out.println("Hokage receives message: " + message);
+        }
+    }
+
+    // 忍者村類，作為中介者
+    class NinjaVillage implements Mediator {
+        private Hokage hokage;
+        private Ninja ninja;
+
+        public void setHokage(Hokage hokage) {
+            this.hokage = hokage;
+        }
+
+        public void setNinja(Ninja ninja) {
+            this.ninja = ninja;
+        }
+
+        public void send(String message, Participant sender) {
+            if (sender == hokage) {
+                ninja.receive(message);
+            } else {
+                hokage.receive(message);
+            }
+        }
+    }
+
+    // 測試代碼
+    public class Main {
+        public static void main(String[] args) {
+            NinjaVillage ninjaVillage = new NinjaVillage();
+
+            Hokage hokage = new Hokage(ninjaVillage);
+            Ninja ninja = new Ninja(ninjaVillage);
+
+            ninjaVillage.setHokage(hokage);
+            ninjaVillage.setNinja(ninja);
+
+            hokage.send("The village is under attack!");
+            ninja.send("I'm on my way!");
+        }
+    }  
+  ```
 
 #### 備忘錄模式（Memento）
 
-
+- 解決問題
+- 解決方式
+- 使用時機
+- Example in java
 
 #### 觀察者模式（Observer）
 
-
+- 解決問題
+- 解決方式
+- 使用時機
+- Example in java
 
 #### 狀態模式（State）
 
-
+- 解決問題
+- 解決方式
+- 使用時機
+- Example in java
 
 #### 策略模式（Strategy）
 
-
+- 解決問題
+- 解決方式
+- 使用時機
+- Example in java
 
 #### 模板方法模式（Template Method）
 
-
+- 解決問題
+- 解決方式
+- 使用時機
+- Example in java
 
 #### 訪問者模式（Visitor）
 
+- 解決問題
+- 解決方式
+- 使用時機
+- Example in java
 
 
 
