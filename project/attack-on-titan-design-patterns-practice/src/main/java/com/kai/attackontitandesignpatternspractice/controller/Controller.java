@@ -198,7 +198,7 @@ public class Controller {
             pureTitan.getState().setAttackStrategy(new PureTitanRunStrategy());
             pureTitanArmy.addTitan(pureTitan);
         }
-//        4. 使用組合模式(Composite Pattern)讓純潔巨人們追蹤調查兵團
+//        4. 使用組合模式(Composite Pattern)讓所有的純潔巨人一起攻擊(追)調查兵團
         System.out.println("Pure Titans are chasing Scouts Regiment");
         pureTitanArmy.attack();
 
