@@ -3,6 +3,7 @@ package com.kai.attackontitandesignpatternspractice.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kai.attackontitandesignpatternspractice.model.enums.BloodType;
 import com.kai.attackontitandesignpatternspractice.model.enums.TitanType;
+import com.kai.attackontitandesignpatternspractice.model.enums.TransformSignal;
 import com.kai.attackontitandesignpatternspractice.model.interfaces.Human;
 import com.kai.attackontitandesignpatternspractice.model.state.interfaces.State;
 import com.kai.attackontitandesignpatternspractice.model.state.HumanState;
@@ -35,10 +36,10 @@ public class ConcreteHuman implements Human {
     }
 
     public void transform(String state) {
-        if (state.equals("Titan")) {
+        if (state.equals(TransformSignal.TITAN.getValue())) {
             this.state = new TitanState();
             this.state.transform(this);
-        } else if (state.equals("Human")) {
+        } else if (state.equals(TransformSignal.HUMAN.getValue())) {
             this.state = new HumanState();
             this.state.transform(this);
         } else {

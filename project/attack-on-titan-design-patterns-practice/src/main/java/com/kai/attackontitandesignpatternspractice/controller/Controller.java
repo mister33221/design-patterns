@@ -123,7 +123,7 @@ public class Controller {
     }
 
     @PostMapping("/beastTitanAttackMiddeEast")
-    @Operation(summary = "Beast Titan attack Midde East Using state pattern to solve human and titan transform. Using strategy pattern to solve different attack strategy", tags = {"Mission"})
+    @Operation(summary = "Beast Titan attack Middle East Using state pattern to solve human and titan transform. Using strategy pattern to solve different attack strategy", tags = {"Mission"})
     public String BeastTitanAttackMiddeEast() {
 
 //        1. 先把吉克的資料取出來
