@@ -8,6 +8,8 @@ import com.kai.attackontitandesignpatternspractice.mission.ConcreteMikasaAttackA
 import com.kai.attackontitandesignpatternspractice.mission.interfaces.AttackArmoredTitanHandler;
 import com.kai.attackontitandesignpatternspractice.model.ConcreteHuman;
 import com.kai.attackontitandesignpatternspractice.model.PureTitanArmy;
+import com.kai.attackontitandesignpatternspractice.model.command.*;
+import com.kai.attackontitandesignpatternspractice.model.command.interfaces.Command;
 import com.kai.attackontitandesignpatternspractice.model.decorator.ThunderSpearDecorator;
 import com.kai.attackontitandesignpatternspractice.model.decorator.VerticalManeuveringEquipmentDecorator;
 import com.kai.attackontitandesignpatternspractice.model.enums.TitanType;
@@ -193,7 +195,7 @@ public class Controller {
         beastTitan.getState().setAttackStrategy(new BeastTitanShoutsStrategy());
         System.out.println(beastTitan.attack());
         PureTitanArmy pureTitanArmy = new PureTitanArmy();
-        for(ConcreteHuman pureTitan : pureTitans) {
+        for (ConcreteHuman pureTitan : pureTitans) {
             pureTitan.transform(TransformSignal.TITAN.getValue());
             pureTitan.getState().setAttackStrategy(new PureTitanRunStrategy());
             pureTitanArmy.addTitan(pureTitan);
@@ -201,6 +203,33 @@ public class Controller {
 //        4. 使用組合模式(Composite Pattern)讓所有的純潔巨人一起攻擊(追)調查兵團
         System.out.println("Pure Titans are chasing Scouts Regiment");
         pureTitanArmy.attack();
+
+    }
+
+    @PostMapping("ErwomCommandTheSccoutsRegimentToAttackBeastTitan")
+    @Operation(summary = "Erwom command the scouts regiment to attack beast titan by using command pattern", tags = {"Mission"})
+    public void ErwomCommandTheSccoutsRegimentToAttackBeastTitan() {
+
+//        1. TODO 先暫時直接建立一個Erwin、一個Levi物件，之後有空再改以現有的ConcreteHuman取代
+//        2. 艾爾文下令調查兵團發動突襲，噴射煙霧彈來干擾野獸巨人的視線，並讓Levi隻身繞後偷襲野獸巨人
+//
+        Erwin erwin = new Erwin();
+        Levi levi = new Levi();
+        ScoutRegiment scoutRegiment = new ScoutRegiment();
+
+        Command attackCommand = new AssaultCommand(scoutRegiment);
+        Command smokeSignalCommand = new AssaultCommand(scoutRegiment);
+        Command attackFromBehindCommand = new FlankAttackCommand(levi);
+
+//          2.1 艾爾文下令調查兵團發動突襲
+        erwin.setCommand(attackCommand);
+        erwin.executeCommand();
+//          2.2 艾爾文下令調查兵團發動煙霧彈
+        erwin.setCommand(smokeSignalCommand);
+        erwin.executeCommand();
+//          2.3 艾爾文下令Levi隻身繞後偷襲野獸巨人
+        erwin.setCommand(attackFromBehindCommand);
+        erwin.executeCommand();
 
     }
 
