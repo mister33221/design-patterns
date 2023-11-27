@@ -1126,7 +1126,7 @@
     }  
   ```
 
-#### 裝飾者模式（Decorator）
+####裝飾者模式（Decorator） 
 
 - 解決問題
   - 在不修改現有對象結構的情況下，動態地給一個對象添加一些額外的職責或功能。這種模式提供了比繼承更有彈性的替代方案。
@@ -1208,13 +1208,212 @@
   ```
 #### 外觀模式（Facade）
 
+- 解決問題
+  - 用於為一個複雜的子系統提供一個統一的接口，從而使得子系統更容易使用。這種模式通常用於封裝一個複雜的子系統的細節，並提供一個簡單的接口來進行交互。
+- 解決方式
+  - 通過創建一個新的外觀類別來解決這個問題，這個外觀類別包含了一個對子系統的引用，並提供一個簡單的接口來進行交互。這種方式使得用戶可以通過外觀類別來使用子系統，而不需要直接與子系統的各個類別和方法進行交互。
+- 使用時機
+  - 當你需要簡化一個複雜的子系統時，可以使用外觀模式。這種情況可能是因為子系統很難使用或者存在很多的依賴關係。
+  - 當你需要將子系統分層時，可以使用外觀模式。使用外觀模式，你可以將子系統分為多個層，每一個層都有自己的外觀類別。
+  - 當你需要將子系統封裝起來，以避免將它們暴露給用戶端時，可以使用外觀模式。
+  - 當你需要將子系統的組件進行交互時，可以使用外觀模式。外觀模式提供了一個統一的接口，用於與子系統進行交互，並封裝了子系統之間的依賴關係。
+- Example in java: 忍者的各種技能（例如：體術、忍術、幻術）視為一個複雜的子系統。我們可以使用外觀模式來提供一個簡單的接口，讓忍者可以輕鬆地使用這些技能。
+    ```java
+    // 子系統類別：體術
+    class Taijutsu {
+        void useTaijutsu() {
+            System.out.println("Using Taijutsu (Body Techniques)");
+        }   
+    }
+    // 子系統類別：忍術
+    class Ninjutsu {
+        void useNinjutsu() {
+            System.out.println("Using Ninjutsu (Ninja Techniques)");
+        }
+    }
+    // 子系統類別：幻術
+    class Genjutsu {
+        void useGenjutsu() {
+            System.out.println("Using Genjutsu (Illusion Techniques)");
+        }
+    }
+    // 外觀類別：忍者
+    class NinjaFacade {
+        private Taijutsu taijutsu;
+        private Ninjutsu ninjutsu;
+        private Genjutsu genjutsu;
 
+        public NinjaFacade() {
+            taijutsu = new Taijutsu();
+            ninjutsu = new Ninjutsu();
+            genjutsu = new Genjutsu();
+        }
+
+        public void useTechniques() {
+            taijutsu.useTaijutsu();
+            ninjutsu.useNinjutsu();
+            genjutsu.useGenjutsu();
+        }
+    }
+
+    public class Client {
+        public static void main(String[] args) {
+            NinjaFacade ninja = new NinjaFacade();
+            ninja.useTechniques();
+        }
+    }    
+    ```
 
 #### 享元模式（Flyweight）
 
+- 解決問題
+  - 用於在大量相似對象的情況下，減少記憶體的使用。這種模式通過共享盡可能多的相似對象來達到這個目的。
+- 解決方法
+  - 通過將對象的狀態分為內部和外部兩部分來解決這個問題。內部狀態是共享的部分，存儲在享元對象中，而外部狀態則由客戶端對象存儲，並在需要時傳遞給享元對象。
+- 使用時機
+  - 當你需要大量的相似對象時：如果你需要創建大量的相似對象，並且這些對象的一部分狀態可以共享，那麼使用享元模式可以有效地節省記憶體。
+  - 當對象的大部分狀態都可以變為外部狀態時：如果一個對象的大部分狀態都可以變為外部狀態，那麼你可以使用享元模式來將這些狀態移出對象，並儲存在外部數據結構中。
+  - 當你想要避免高昂的記憶體成本時：如果由於創建大量類似對象而導致記憶體成本過高，那麼使用享元模式可以幫助你減少記憶體的使用。
+- Example in java: 將忍術視為一個享元。每種忍術都有一個名稱和類型，這些可以被視為內部狀態。而忍術的使用者和目標則可以被視為外部狀態。
+  ```java
+    // 享元類別，包含了忍術的內部狀態(名稱與類型)
+    class Jutsu {
+        private String name;
+        private String type;
 
+        public Jutsu(String name, String type) {
+            this.name = name;
+            this.type = type;
+        }
+        // 忍術的使用者和目標可以被視為外部狀態
+        void useJutsu(String user, String target) {
+            System.out.println(user + " uses " + type + " jutsu " + name + " on " + target);
+        }
+    }
+    // 工廠類別，用於創建與共享 Jutsu 物件
+    class JutsuFactory {
+        private static Map<String, Jutsu> jutsus = new HashMap<>();
+
+        public static Jutsu getJutsu(String name, String type) {
+            Jutsu result = jutsus.get(name);
+            if (result == null) {
+                synchronized (JutsuFactory.class) {
+                    if (result == null){
+                    result = new Jutsu(name, type);
+                    jutsus.put(name, result);
+                    }
+                }
+            }
+            return result;
+        }
+    }
+    // 忍者類別，包含忍者名稱與忍術
+    class Ninja {
+        private Jutsu jutsu;
+        private String name;
+
+        public Ninja(String name, Jutsu jutsu) {
+            this.name = name;
+            this.jutsu = jutsu;
+        }
+
+        public void attack(String target) {
+            jutsu.useJutsu(name, target);
+        }
+    }
+
+    public class Client {
+        public static void main(String[] args) {
+            Jutsu rasengan = JutsuFactory.getJutsu("Rasengan", "A-rank");
+            Ninja naruto = new Ninja("Naruto", rasengan);
+            naruto.attack("enemy");
+
+            Jutsu chidori = JutsuFactory.getJutsu("Chidori", "A-rank");
+            Ninja sasuke = new Ninja("Sasuke", chidori);
+            sasuke.attack("enemy");
+        }
+    }
+  ```
 
 #### 代理模式（Proxy）
+
+- 解決問題
+  - 用於控制對原始對象的訪問，並允許在對象被訪問前後進行一些處理。
+- 解決方式
+  - 通過創建一個新的代理類別來解決這個問題，這個代理類別包含了一個對原始對象的引用，並提供與原始對象相同的接口。這種方式使得你可以在客戶端與原始對象之間插入代理對象，從而控制對原始對象的訪問並添加額外的操作。
+- 使用時機
+  - 當你需要控制對原始對象的訪問時：如果你需要在訪問一個對象時添加一些額外的操作，例如安全檢查、參數驗證、緩存等，那麼你可以使用代理模式。
+  - 當你需要隔離客戶端與具體對象之間的耦合時：如果你想要隔離客戶端與具體對象之間的耦合，使得你可以在不影響客戶端的情況下更換或修改對象，那麼你可以使用代理模式。
+  - 當你需要實現延遲加載或遠程訪問時：如果一個對象的創建或訪問需要大量的資源，那麼你可以使用代理模式來實現延遲加載或遠程訪問。
+- Example in java: 以下是一個基礎的模式，而可以在 ShadowClone clone = new ShadowClone(naruto);後，clone.attack("enemy");前，客製一些操作，如安全驗證、緩存等，這才是使用代理模式的真正目的。
+  ```java
+    // 忍者接口，定義了忍者的行為
+    interface Ninja {
+        void attack(String target);
+
+        void checkChakra();
+    }
+
+    // 真實的忍者類別，實現了忍者接口
+    class RealNinja implements Ninja {
+        private String name;
+        private int chakra;
+
+        public RealNinja(String name, int chakra) {
+            this.name = name;
+            this.chakra = chakra;
+        }
+
+        // 真實的忍者進行攻擊
+        public void attack(String target) {
+            System.out.println(name + " attacks " + target);
+            chakra -= 10; // 減少 chakra
+        }
+
+        // 檢查 chakra 的狀態
+        public void checkChakra() {
+            System.out.println(name + "'s chakra level: " + chakra);
+        }
+    }
+
+    // 影分身類別，實現了忍者接口，作為真實忍者的代理
+    class ShadowClone implements Ninja {
+        private Ninja realNinja;
+
+        public ShadowClone(Ninja realNinja) {
+            this.realNinja = realNinja;
+        }
+
+        // 影分身進行攻擊，實際上是調用真實忍者的攻擊方法
+        public void attack(String target) {
+            if(checkChakra() <10){ // 檢查狀態
+                System.out.println("Not enough chakra!");
+                return;
+            } else {
+                System.out.println("Shadow clone of " + realNinja + " attacks " + target);
+                realNinja.attack(target);
+            }
+        }
+
+        // 檢查真實忍者的狀態
+        public void checkChakra() {
+            realNinja.checkChakra();
+        }
+    }
+
+    public class Client {
+        public static void main(String[] args) {
+            // 創建一個真實的忍者
+            Ninja naruto = new RealNinja("Naruto", 100);
+            // 創建一個影分身
+            Ninja clone = new ShadowClone(naruto);
+            // 讓影分身進行攻擊
+            clone.attack("enemy");
+        }
+    }
+  ```
+
+- 
 
 
 ### 行為型模式（Behavioral Patterns）：這些模式專注於對象之間的通信，並且通常用於實現更好的通信和更緊密的關係。
