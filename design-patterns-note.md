@@ -1431,7 +1431,7 @@
   - 當不明確指定接收者的情況下，向多個對象中的一個提交一個請求時，可以使用鏈接責任模式。請求的發送者不需要知道請求是誰處理的，接收者也可以動態地決定是否要處理請求。
   - 當需要動態指定一組對象處理請求時，可以使用鏈接責任模式。客戶端可以動態地改變處理者鏈條或者動態地改變請求，這提高了程式的靈活性和可擴展性。
   - 當希望用戶可以簡單地發送請求，而不必每次都確定接收者時，可以使用鏈接責任模式。這種方式可以簡化請求的發送者的工作，並讓請求的處理更加靈活。
-- Example in java: 將鏈接責任模式應用於忍者的等級系統。假設有一個任務，需要由不同等級的忍者來處理。如果一個忍者無法處理該任務，則將任務傳遞給下一個等級的忍者。這裡的等級可以是：學生、下忍、中忍、上忍和火影。
+- Example in java: 將鏈接責任模式應用於忍者的等級系統。假設有一個任務，需要由不同等級的忍者來處理。如果一個忍者無法處理該任務，則將任務傳遞給下一個等級的忍者。這裡的等級可以是：學生、下忍、中忍、上忍和火影。此範例是判斷任務應該要分派給誰，不過責任鏈模式也可以用於處理一個有流程控管的任務。
   ```java
     // 定義一個忍者等級的抽象類別
     abstract class Ninja {
@@ -1628,7 +1628,83 @@
 
 #### 解釋器模式（Interpreter）
 
+- 解決問題
+  - 解決的問題是如何設計一種簡單的語言或者表達式，並且如何解釋和執行這種語言或表達式。這種模式常用於處理頻繁變化的語法或業務規則等場景。
+- 解決方式
+  - 定義一個語法樹（Syntax Tree），每個節點表示一個語法規則。這個語法樹是由具體的解釋器對象構成的。
+  - 定義一個解釋器接口或抽象類別，定義解釋操作。
+  - 每個具體的解釋器類別實現解釋器接口或繼承解釋器抽象類別，並實現解釋操作。解釋操作通常是遞歸的，每個解釋器只解釋自己對應的語法規則，並調用其子節點的解釋操作。
+  - 客戶端創建語法樹，並調用解釋操作。
+- 使用時機
+  - 當有一個語言需要解釋執行，並且可以將該語言中的句子表示為一個抽象語法樹時，可以使用解釋器模式。這種情況常見於編譯器的設計和實現。
+  - 當一個簡單的語言需要頻繁的變化時，可以使用解釋器模式。這種情況常見於業務規則的處理，例如規則引擎。
+  - 當一些重複發生的問題可以用一種簡單的語言來進行表達時，可以使用解釋器模式。這種情況常見於SQL解析、符號處理等。
+- 缺點
+  - 這種方式可以將語法規則和解釋操作解耦，使得語法規則的變化不會影響到解釋操作，並且可以方便地添加新的語法規則和解釋操作。但是，解釋器模式的缺點是對於複雜的語法規則，解釋器的設計和實現可能會變得很複雜。
+- Example in java: 這個例子實現了一個簡單的加法和減法的解釋器
+  ```java
+    // 定義一個表達式的接口
+    interface Expression {
+        int interpret();
+    }
 
+    // 定義一個數字表達式
+    class NumberExpression implements Expression {
+        private int number;
+
+        public NumberExpression(int number) {
+            this.number = number;
+        }
+
+        public int interpret() {
+            return this.number;
+        }
+    }
+
+    // 定義一個加法表達式
+    class AddExpression implements Expression {
+        private Expression expr1;
+        private Expression expr2;
+
+        public AddExpression(Expression expr1, Expression expr2) {
+            this.expr1 = expr1;
+            this.expr2 = expr2;
+        }
+
+        public int interpret() {
+            return this.expr1.interpret() + this.expr2.interpret();
+        }
+    }
+
+    // 定義一個減法表達式
+    class SubtractExpression implements Expression {
+        private Expression expr1;
+        private Expression expr2;
+
+        public SubtractExpression(Expression expr1, Expression expr2) {
+            this.expr1 = expr1;
+            this.expr2 = expr2;
+        }
+
+        public int interpret() {
+            return this.expr1.interpret() - this.expr2.interpret();
+        }
+    }
+
+    // 測試
+    public class Main {
+        public static void main(String[] args) {
+            Expression expr = new AddExpression(
+                new NumberExpression(1), 
+                new SubtractExpression(
+                    new NumberExpression(2), 
+                    new NumberExpression(1)
+                )
+            );
+            System.out.println("The result is: " + expr.interpret());
+        }
+    }  
+  ```
 
 #### 迭代器模式（Iterator）
 
