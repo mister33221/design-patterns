@@ -209,7 +209,7 @@ public class Controller {
     @Operation(summary = "Erwom command the scouts regiment to attack beast titan by using command pattern", tags = {"Mission"})
     public void ErwomCommandTheSccoutsRegimentToAttackBeastTitan() {
 
-//        1. TODO 先暫時直接建立一個Erwin、一個Levi物件，之後有空再改以現有的ConcreteHuman取代
+//        1. TODO 先暫時直接建立一個Erwin、一個Levi class，之後有空再改以現有的ConcreteHuman取代
 //        2. 艾爾文下令調查兵團發動突襲，噴射煙霧彈來干擾野獸巨人的視線，並讓Levi隻身繞後偷襲野獸巨人
 //
         Erwin erwin = new Erwin();
