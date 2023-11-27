@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping("/init")
 public class Controller {
 
 
@@ -206,7 +205,7 @@ public class Controller {
 
     }
 
-    @PostMapping("ErwomCommandTheSccoutsRegimentToAttackBeastTitan")
+    @PostMapping("ErwinCommandTheScoutsRegimentToAttackBeastTitan")
     @Operation(summary = "Erwom command the scouts regiment to attack beast titan by using command pattern", tags = {"Mission"})
     public void ErwomCommandTheSccoutsRegimentToAttackBeastTitan() {
 
@@ -218,7 +217,7 @@ public class Controller {
         ScoutRegiment scoutRegiment = new ScoutRegiment();
 
         Command attackCommand = new AssaultCommand(scoutRegiment);
-        Command smokeSignalCommand = new AssaultCommand(scoutRegiment);
+        Command smokeSignalCommand = new SmokeSignalCommand(scoutRegiment);
         Command attackFromBehindCommand = new FlankAttackCommand(levi);
 
 //          2.1 艾爾文下令調查兵團發動突襲
