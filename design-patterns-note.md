@@ -1419,7 +1419,100 @@
 ### 行為型模式（Behavioral Patterns）：這些模式專注於對象之間的通信，並且通常用於實現更好的通信和更緊密的關係。
 #### 鏈接責任模式（Chain of Responsibility）
 
+- 解決問題
+  - 避免請求的發送者和接收者之間的耦合關係。它讓多個對象都有機會處理請求，從而解放出發送者的責任。發送者不需要知道請求是誰處理的，接收者也可以動態地決定是否要處理請求。
+- 解決方式
+  - 創建一個接口或抽象類別，定義一個方法用於處理請求，並定義一個方法設置下一個處理者。
+  - 每個具體的處理者類別實現這個接口或繼承這個抽象類別，並實現處理請求的方法。如果該處理者無法處理請求，則將請求轉發給下一個處理者。
+  - 客戶端創建處理者對象，並設置它們的下一個處理者，形成一個鏈條。
+  - 客戶端將請求發送到鏈條的第一個處理者，如果該處理者無法處理請求，則將請求轉發給下一個處理者，依此類推。
+- 使用時機
+  - 當多個對象可以處理同一請求，但具體由哪個對象處理由運行時動態決定時，可以使用鏈接責任模式。這種方式可以避免硬編碼固定的請求處理順序，提高程式的靈活性。
+  - 當不明確指定接收者的情況下，向多個對象中的一個提交一個請求時，可以使用鏈接責任模式。請求的發送者不需要知道請求是誰處理的，接收者也可以動態地決定是否要處理請求。
+  - 當需要動態指定一組對象處理請求時，可以使用鏈接責任模式。客戶端可以動態地改變處理者鏈條或者動態地改變請求，這提高了程式的靈活性和可擴展性。
+  - 當希望用戶可以簡單地發送請求，而不必每次都確定接收者時，可以使用鏈接責任模式。這種方式可以簡化請求的發送者的工作，並讓請求的處理更加靈活。
+- Example in java: 將鏈接責任模式應用於忍者的等級系統。假設有一個任務，需要由不同等級的忍者來處理。如果一個忍者無法處理該任務，則將任務傳遞給下一個等級的忍者。這裡的等級可以是：學生、下忍、中忍、上忍和火影。
+  ```java
+    // 定義一個忍者等級的抽象類別
+    abstract class Ninja {
+        protected Ninja nextNinja;
 
+        public void setNextNinja(Ninja nextNinja) {
+            this.nextNinja = nextNinja;
+        }
+
+        public abstract void handleTask(String task);
+    }
+
+    // 學生: 忍者等級的最低等級，無法處理任何任務，只能讀書
+    class Student extends Ninja {
+        public void handleTask(String task) {
+            if (task.equals("study")) {
+                System.out.println("Student can handle the task: " + task);
+            } else if (nextNinja != null) {
+                nextNinja.handleTask(task);
+            }
+        }
+    }
+
+    // 下忍: 可以處理 D-rank 任務
+    class Genin extends Ninja {
+        public void handleTask(String task) {
+            if (task.equals("D-rank mission")) {
+                System.out.println("Genin can handle the task: " + task);
+            } else if (nextNinja != null) {
+                nextNinja.handleTask(task);
+            }
+        }
+    }
+
+    // 中忍: 可以處理 C-rank 任務
+    class Chunin extends Ninja {
+        public void handleTask(String task) {
+            if (task.equals("C-rank mission")) {
+                System.out.println("Chunin can handle the task: " + task);
+            } else if (nextNinja != null) {
+                nextNinja.handleTask(task);
+            }
+        }
+    }
+
+    // 上忍: 可以處理 B-rank 任務和 A-rank 任務
+    class Jonin extends Ninja {
+        public void handleTask(String task) {
+            if (task.equals("B-rank mission") || task.equals("A-rank mission")) {
+                System.out.println("Jonin can handle the task: " + task);
+            } else if (nextNinja != null) {
+                nextNinja.handleTask(task);
+            }
+        }
+    }
+
+    // 火影: 可以處理任何任務
+    class Hokage extends Ninja {
+        public void handleTask(String task) {
+            System.out.println("Hokage can handle any task: " + task);
+        }
+    }
+
+    // 測試
+    public class Main {
+        public static void main(String[] args) {
+            Student student = new Student();
+            Genin genin = new Genin();
+            Chunin chunin = new Chunin();
+            Jonin jonin = new Jonin();
+            Hokage hokage = new Hokage();
+
+            student.setNextNinja(genin);
+            genin.setNextNinja(chunin);
+            chunin.setNextNinja(jonin);
+            jonin.setNextNinja(hokage);
+
+            student.handleTask("A-rank mission");
+        }
+    }
+  ```
 
 #### 命令模式（Command）
 
