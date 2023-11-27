@@ -1418,15 +1418,153 @@
 
 ### 行為型模式（Behavioral Patterns）：這些模式專注於對象之間的通信，並且通常用於實現更好的通信和更緊密的關係。
 #### 鏈接責任模式（Chain of Responsibility）
+
+
+
 #### 命令模式（Command）
+
+- 解決問題
+  - 用於將操作封裝為一個對象，從而允許你將操作參數化，將操作放入隊列中，將操作保存為日誌，或者支持可撤銷的操作。
+- 解決方法
+  - 通過將操作封裝為一個對象來解決這個問題。這個對象包含了操作的所有必要信息，例如操作的對象、操作的方法和操作的參數。這種方式使得你可以將操作參數化，並將它們作為一個對象傳遞。此外，你還可以將這些對象放入一個隊列中，並在需要時執行它們。如果這些對象支持撤銷操作，那麼你還可以使用這些對象來實現撤銷功能。
+- 使用時機
+  - 當你想要將操作參數化，並將它們作為一個對象傳遞時：如果你需要將操作參數化，並將它們作為一個對象傳遞，那麼你可以使用命令模式。這種方式使得你可以在運行時改變一個對象的行為。
+  - 當你想要將操作放入隊列中，並在需要時執行它們時：如果你需要將操作放入一個隊列中，並在需要時執行它們，那麼你可以使用命令模式。這種方式使得你可以在適當的時候執行操作，或者將多個操作組合在一起。
+  - 當你想要支持撤銷操作時：如果你需要支持撤銷操作，那麼你可以使用命令模式。這種方式使得你可以保存操作的歷史，並在需要時撤銷它們。
+- Eample in java: 以進擊的巨人奪回瑪麗雅之牆戰役中，與野獸巨人的的對峙故事為例，我們可以將艾爾文團長的命令視為命令，讓調查兵團(命令的接收者)發動突襲並射出煙霧彈，讓里維兵長(命令的接收者)隻身繞後偷襲野獸巨人。艾爾文團長是調用者，他可以指定調查兵團和里維兵長執行哪個命令。
+  ```java
+    // 命令接口
+    interface Command {
+        void execute();
+    }
+
+    // 具體的命令：突襲
+    class AssaultCommand implements Command {
+        private ScoutRegiment scoutRegiment;
+
+        AssaultCommand(ScoutRegiment scoutRegiment) {
+            this.scoutRegiment = scoutRegiment;
+        }
+
+        public void execute() {
+            scoutRegiment.assault();
+        }
+    }
+
+    // 具體的命令：發射煙霧彈
+    class SmokeSignalCommand implements Command {
+        private ScoutRegiment scoutRegiment;
+
+        SmokeSignalCommand(ScoutRegiment scoutRegiment) {
+            this.scoutRegiment = scoutRegiment;
+        }
+
+        public void execute() {
+            scoutRegiment.smokeSignal();
+        }
+    }
+
+    // 具體的命令：繞後突襲
+    class FlankAttackCommand implements Command {
+        private Levi levi;
+
+        FlankAttackCommand(Levi levi) {
+            this.levi = levi;
+        }
+
+        public void execute() {
+            levi.flankAttack();
+        }
+    }
+
+    // 接收者：調查兵團
+    class ScoutRegiment {
+        void assault() {
+            System.out.println("Scout Regiment is launching an assault!");
+        }
+
+        void smokeSignal() {
+            System.out.println("Scout Regiment is firing smoke signals!");
+        }
+    }
+
+    // 接收者：里維兵長
+    class Levi {
+        void flankAttack() {
+            System.out.println("Levi is launching a flank attack!");
+        }
+    }
+
+    // 調用者：艾爾文團長
+    class Erwin {
+        private Command command;
+
+        void setCommand(Command command) {
+            this.command = command;
+        }
+
+        void executeCommand() {
+            command.execute();
+        }
+    }
+
+    // 客戶端代碼
+    public class Main {
+        public static void main(String[] args) {
+            ScoutRegiment scoutRegiment = new ScoutRegiment();
+            Levi levi = new Levi();
+            Command assaultCommand = new AssaultCommand(scoutRegiment);
+            Command smokeSignalCommand = new SmokeSignalCommand(scoutRegiment);
+            Command flankAttackCommand = new FlankAttackCommand(levi);
+            Erwin erwin = new Erwin();
+
+            // 艾爾文團長命令調查兵團發動突襲
+            erwin.setCommand(assaultCommand);
+            erwin.executeCommand();
+
+            // 艾爾文團長命令調查兵團發射煙霧彈
+            erwin.setCommand(smokeSignalCommand);
+            erwin.executeCommand();
+
+            // 艾爾文團長命令里維兵長繞後突襲
+            erwin.setCommand(flankAttackCommand);
+            erwin.executeCommand();
+        }
+    } 
+  ```
+
 #### 解釋器模式（Interpreter）
+
+
+
 #### 迭代器模式（Iterator）
+
+
+
 #### 中介者模式（Mediator）
+
+
+
 #### 備忘錄模式（Memento）
+
+
+
 #### 觀察者模式（Observer）
+
+
+
 #### 狀態模式（State）
+
+
+
 #### 策略模式（Strategy）
+
+
+
 #### 模板方法模式（Template Method）
+
+
+
 #### 訪問者模式（Visitor）
 
 
