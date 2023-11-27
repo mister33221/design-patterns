@@ -1934,7 +1934,7 @@
         }
     }
 
-    // 無限月讀類，作為主題
+    // 無限月讀類
     class InfiniteTsukuyomi {
         private List<Observer> observers = new ArrayList<>();
         private String status;
@@ -1975,16 +1975,156 @@
 #### 狀態模式（State）
 
 - 解決問題
+  - 當一個對象的行為取決於它的狀態，並且它必須在運行時根據狀態改變其行為時，我們通常會使用大量的條件語句來控制該對象的行為，這使得對象的狀態難以維護和擴展。
 - 解決方式
+  - 與特定狀態相關的行為封裝在一個類中。當對象的狀態改變時，我們只需要改變對象的狀態類即可實現行為的改變。這樣，我們可以避免使用大量的條件語句，使得程式碼更加清晰，並且更易於維護和擴展。
 - 使用時機
-- Example in java
+  - 當一個對象的行為取決於它的狀態，並且它必須在運行時根據狀態改變其行為時。在這種情況下，將每個狀態的行為封裝在一個或多個狀態類中，可以使得程式碼更加清晰，並且更易於維護和擴展。
+  - 當一個對象的狀態過多，並且這些狀態之間的轉換規則複雜時。使用狀態模式可以將狀態的轉換規則封裝在狀態類中，從而避免對象需要維護一個大量的條件語句。
+  - 當你需要根據一個對象的狀態來改變其內部狀態時。使用狀態模式可以將這些操作封裝在狀態類中，從而使得對象的狀態改變更加清晰和可控。
+- Example in java: 在"NormalState"中，忍者的攻擊力和防禦力是正常的，而在"ChakraState"中，他們的攻擊力和防禦力會增加。
+  ```java
+    // 狀態接口
+    public interface State {
+        void attack();
+        void defend();
+    }
+    // 具體狀態類: 一般狀態
+    public class NormalState implements State {
+        @Override
+        public void attack() {
+            System.out.println("Ninja attacks normally.");
+        }
+
+        @Override
+        public void defend() {
+            System.out.println("Ninja defends normally.");
+        }
+    }
+    // 具體狀態類: 查克拉狀態
+    public class ChakraState implements State {
+        @Override
+        public void attack() {
+            System.out.println("Ninja attacks with increased power due to chakra.");
+        }
+
+        @Override
+        public void defend() {
+            System.out.println("Ninja defends with increased power due to chakra.");
+        }
+    }
+    // 環境類
+    public class Ninja {
+        private State state;
+
+        public Ninja() {
+            state = new NormalState();  // initial state
+        }
+
+        public void setState(State state) {
+            this.state = state;
+        }
+
+        public void attack() {
+            state.attack();
+        }
+
+        public void defend() {
+            state.defend();
+        }
+    }
+    public class Main {
+        public static void main(String[] args) {
+            Ninja naruto = new Ninja();
+            naruto.attack();  // output: Ninja attacks normally.
+            naruto.defend();  // output: Ninja defends normally.
+
+            naruto.setState(new ChakraState());
+            naruto.attack();  // output: Ninja attacks with increased power due to chakra.
+            naruto.defend();  // output: Ninja defends with increased power due to chakra.
+        }
+    }  
+  ```
 
 #### 策略模式（Strategy）
 
 - 解決問題
+  - 當一個類的行為或算法可以在運行時更改。
+  - 當一個對象有很多行為，如果不使用策略模式，這些行為就需要使用多重條件選擇語句來處理。
+  - 當一個對象的行為可能變化，但可以彈性地在運行時改變其行為。
 - 解決方式
+  - 策略模式定義了一系列的算法，並將每一個算法封裝起來，使它們可以互相替換，讓算法獨立於使用它的客戶端。這種模式涉及到算法的選擇，因此可以根據情況選擇不同的算法。具體來說，策略模式通常由三部分組成：
+    - Context（上下文）：上下文通常會持有一個策略對象，並提供一個接口讓外部客戶端設置新的策略。
+    - Strategy（策略）：這是一個接口，定義了每個策略或行為必須擁有的方法。
+    - Concrete Strategies（具體策略）：實現策略接口的類。在運行時，這些具體策略將替換在上下文中的策略。
 - 使用時機
+  - 當你有多種算法或行為，並且知道在運行時可能需要在它們之間切換時：策略模式允許你在運行時動態更改對象的行為。
+  - 當你需要避免使用多重條件選擇語句時：策略模式提供了一種使用多個條件分支的替代方案。每個條件分支都移至其自己的類中，從而使你可以在對象的行為上使用多態性。
+  - 當你有一個需要多種變體的類，並且這可以通過多種算法來實現時：策略模式讓你能夠獨立地改變類的核心算法。
+  - 當你的類有一個與其主要責任不相關的行為，並且存在多種變體時：策略模式讓你能夠將這種行為提取到一組獨立的類中。
+  - 當你需要一種方法來讓客戶端不知道複雜的、算法相關的數據結構時：策略模式可以提供一種隱藏複雜性的方法。
 - Example in java
+  ```java
+    // 定義策略接口
+    public interface JutsuStrategy {
+        void useJutsu();
+    }
+
+    // 實現火之術策略
+    public class FireJutsu implements JutsuStrategy {
+        @Override
+        public void useJutsu() {
+            System.out.println("Using Fire Jutsu!");
+        }
+    }
+
+    // 實現風之術策略
+    public class WindJutsu implements JutsuStrategy {
+        @Override
+        public void useJutsu() {
+            System.out.println("Using Wind Jutsu!");
+        }
+    }
+
+    // 實現水之術策略
+    public class WaterJutsu implements JutsuStrategy {
+        @Override
+        public void useJutsu() {
+            System.out.println("Using Water Jutsu!");
+        }
+    }
+
+    // 定義忍者類別
+    public class Ninja {
+        private JutsuStrategy jutsuStrategy;
+
+        public Ninja(JutsuStrategy jutsuStrategy) {
+            this.jutsuStrategy = jutsuStrategy;
+        }
+
+        public void changeJutsu(JutsuStrategy jutsuStrategy) {
+            this.jutsuStrategy = jutsuStrategy;
+        }
+
+        public void performJutsu() {
+            jutsuStrategy.useJutsu();
+        }
+    }
+
+    // 測試策略模式
+    public class Main {
+        public static void main(String[] args) {
+            Ninja naruto = new Ninja(new WindJutsu());
+            naruto.performJutsu();  // Output: Using Wind Jutsu!
+
+            naruto.changeJutsu(new FireJutsu());
+            naruto.performJutsu();  // Output: Using Fire Jutsu!
+
+            naruto.changeJutsu(new WaterJutsu());
+            naruto.performJutsu();  // Output: Using Water Jutsu!
+        }
+    }  
+  ```
 
 #### 模板方法模式（Template Method）
 
