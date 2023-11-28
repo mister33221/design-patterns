@@ -1,5 +1,6 @@
 package com.kai.attackontitandesignpatternspractice.model.command;
 
+// 命令模式: 命令實實際邏輯
 public class ScoutRegiment {
 
     void assault() {

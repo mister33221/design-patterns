@@ -7,6 +7,7 @@ import com.kai.attackontitandesignpatternspractice.model.enums.TitanType;
 import com.kai.attackontitandesignpatternspractice.model.interfaces.Human;
 import com.kai.attackontitandesignpatternspractice.model.state.HumanState;
 
+// 工廠模式: 具體工廠
 public class HumanFactory implements HumanFacory {
     @Override
     public Human createHuman() {

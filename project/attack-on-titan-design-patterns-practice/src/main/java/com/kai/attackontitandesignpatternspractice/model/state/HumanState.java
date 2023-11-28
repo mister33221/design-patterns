@@ -7,6 +7,7 @@ import com.kai.attackontitandesignpatternspractice.model.state.interfaces.State;
 import com.kai.attackontitandesignpatternspractice.model.tragtegy.SwordHumanStrategy;
 import lombok.Data;
 
+// 狀態模式: 人類狀態
 @Data
 public class HumanState implements State {
 

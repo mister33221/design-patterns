@@ -6,6 +6,7 @@ import com.kai.attackontitandesignpatternspractice.model.interfaces.Human;
 
 import java.util.List;
 
+// 職責鏈模式: 具體處理者
 public class ConcreteMikasaAttackArmoredTitanHandler implements AttackArmoredTitanHandler {
 
     private AttackArmoredTitanHandler nextHandler;

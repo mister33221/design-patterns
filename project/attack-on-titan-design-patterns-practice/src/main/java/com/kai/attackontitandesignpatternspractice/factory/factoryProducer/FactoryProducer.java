@@ -4,7 +4,6 @@ import com.kai.attackontitandesignpatternspractice.factory.factory.HumanFactory;
 import com.kai.attackontitandesignpatternspractice.model.interfaces.Human;
 
 // 簡單工廠模式:工廠生產者
-//
 public class FactoryProducer {
 
     private static final HumanFactory humanFactory = new HumanFactory();

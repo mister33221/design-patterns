@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+// 命令模式: 命令接口實作
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

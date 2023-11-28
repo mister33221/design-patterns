@@ -6,6 +6,7 @@ import com.kai.attackontitandesignpatternspractice.model.state.interfaces.State;
 import com.kai.attackontitandesignpatternspractice.model.tragtegy.interfaces.TitanAttackStrategy;
 import lombok.Data;
 
+// 狀態模式: 狀態類別
 @Data
 public class TitanState implements State {
 
