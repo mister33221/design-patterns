@@ -22,7 +22,6 @@ import com.kai.attackontitandesignpatternspractice.model.tragtegy.PureTitanRunSt
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -208,7 +207,7 @@ public class Controller {
 
     @PostMapping("ErwinCommandTheScoutsRegimentToAttackBeastTitan")
     @Operation(summary = "Erwin command the scouts regiment to attack beast titan by using command pattern", tags = {"Mission"})
-    public void ErwomCommandTheSccoutsRegimentToAttackBeastTitan() {
+    public void ErwinCommandTheScoutsRegimentToAttackBeastTitan() {
 
 //        1. TODO 先暫時直接建立一個Erwin、一個Levi class，之後有空再改以現有的ConcreteHuman取代
 //        2. 艾爾文下令調查兵團發動突襲，噴射煙霧彈來干擾野獸巨人的視線，並讓Levi隻身繞後偷襲野獸巨人
@@ -234,42 +233,3 @@ public class Controller {
     }
 
 }
-
-
-/**
- * 適配器模式（Adapter）：如果你有一些現有的類（例如巨人、人類），但他們的接口不符合你的需求，你可以使用適配器模式來創建一個新的接口。
- * <p>
- * 橋接模式（Bridge）：你可以使用橋接模式來將巨人的抽象部分（例如巨人的類型）與他們的具體實現部分（例如巨人的行為）分離開來。
- * <p>
- * 組合模式（Composite）：如果你需要表示巨人或人類的層次結構，你可以使用組合模式。
- * <p>
- * 裝飾者模式（Decorator）：你可以使用裝飾者模式來動態地給巨人或人類添加新的能力或特性。
- * <p>
- * 外觀模式（Facade）：你可以創建一個外觀類來提供一個統一的接口，用於控制巨人或人類的複雜子系統。
- * <p>
- * 享元模式（Flyweight）：如果你需要大量的巨人或人類對象，你可以使用享元模式來共享相同或相似的對象，以節省記憶體。
- * <p>
- * 代理模式（Proxy）：你可以使用代理模式來控制對巨人或人類的訪問，例如，你可以創建一個代理來延遲巨人的創建，直到真正需要時才創建。
- * <p>
- * 鏈接責任模式（Chain of Responsibility）：你可以使用鏈接責任模式來創建一個巨人攻擊的鏈，每個巨人都有機會處理攻擊，或者將攻擊傳遞給下一個巨人。
- * <p>
- * 命令模式（Command）：你可以使用命令模式來封裝巨人或人類的行為為命令對象，這樣你可以在運行時動態地改變他們的行為。
- * <p>
- * 解釋器模式（Interpreter）：如果你需要解釋一種語言（例如巨人的語言），你可以使用解釋器模式。
- * <p>
- * 迭代器模式（Iterator）：你可以使用迭代器模式來提供一種方法來訪問巨人或人類集合的元素，而不需要暴露集合的內部表示。
- * <p>
- * 中介者模式（Mediator）：你可以使用中介者模式來封裝巨人或人類之間的交互，這樣他們不需要直接互相參考，從而使其解耦。
- * <p>
- * 備忘錄模式（Memento）：你可以使用備忘錄模式來保存巨人或人類的內部狀態，並在以後需要時恢復。
- * <p>
- * 觀察者模式（Observer）：你可以使用觀察者模式來實現巨人或人類的狀態變化時，通知其他對象的功能。
- * <p>
- * 狀態模式（State）：你可以使用狀態模式來讓巨人或人類在內部狀態改變時改變其行為。
- * <p>
- * 策略模式（Strategy）：你可以使用策略模式來定義一系列的算法，並將每一種算法分別放入獨立的類中，使其對象的行為可以在運行時根據不同的策略改變。
- * <p>
- * 模板方法模式（Template Method）：你可以使用模板方法模式來定義一個操作中的算法的骨架，並將一些步驟延遲到子類中。
- * <p>
- * 訪問者模式（Visitor）：你可以使用訪問者模式來定義一個新的操作，以處理巨人或人類的對象。這樣你可以在不改變他們的類的情況下添加新的操作。
- */
