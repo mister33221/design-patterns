@@ -8,7 +8,6 @@ public class FactoryProducer {
 
     private static final HumanFactory humanFactory = new HumanFactory();
 
-
     public Human createHumansByFactory() {
         return humanFactory.createHuman();
     }
