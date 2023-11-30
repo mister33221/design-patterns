@@ -54,7 +54,7 @@ public class Controller {
     @PostMapping("/createHumans")
     @Operation(summary = "Create humans by using abstract factory pattern", tags = {"Init"})
     public String createHumans() {
-//        1. 簡單工廠模式:工廠生產者
+//        1. 抽象工廠模式:工廠生產者
         FactoryProducer factoryProducer = new FactoryProducer();
 
 //        2. 簡單工廠模式:具體工廠，透過工廠生產者取得具體工廠，把產出的人類放進List
@@ -68,7 +68,7 @@ public class Controller {
     @PostMapping("/createSpecificHuman")
     @Operation(summary = "Create specific humans by using abstract factory pattern", tags = {"Init"})
     public String createSpecificHuman() {
-//        1. 簡單工廠模式:工廠生產者
+//        1. 抽象工廠模式:工廠生產者
         FactoryProducer factoryProducer = new FactoryProducer();
 
 //        2. 簡單工廠模式:具體工廠，透過工廠生產者取得具體工廠，把產出的人類放進List
