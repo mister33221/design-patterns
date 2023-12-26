@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @RestController
 public class Controller {
@@ -54,30 +55,22 @@ public class Controller {
     @PostMapping("/createHumans")
     @Operation(summary = "Create humans by using abstract factory pattern", tags = {"Init"})
     public String createHumans() {
-//        1. 抽象工廠模式:工廠生產者
+//      1. 抽象工廠模式:工廠生產者
         FactoryProducer factoryProducer = new FactoryProducer();
 
-//        2. 簡單工廠模式:具體工廠，透過工廠生產者取得具體工廠，把產出的人類放進List
-        for (int i = 1; i <= 10; i++) {
-            concreteHumanList.add((ConcreteHuman) factoryProducer.createHumansByFactory());
-        }
+//      2. 簡單工廠模式:具體工廠，透過工廠生產者取得具體工廠，把產出的人類放進List
+        IntStream.rangeClosed(1, 10)
+                .mapToObj(i -> (ConcreteHuman) factoryProducer.createHumansByFactory())
+                .forEach(concreteHumanList::add);
+
+//          創建特定的人類
+        specialCharactersInitialMap.entrySet().stream()
+                .map(e -> (ConcreteHuman) factoryProducer.createSpecificHumanByFactory(e.getKey(), e.getValue()))
+                .forEach(concreteHumanList::add);
 
         return "Human created";
     }
 
-    @PostMapping("/createSpecificHuman")
-    @Operation(summary = "Create specific humans by using abstract factory pattern", tags = {"Init"})
-    public String createSpecificHuman() {
-//        1. 抽象工廠模式:工廠生產者
-        FactoryProducer factoryProducer = new FactoryProducer();
-
-//        2. 簡單工廠模式:具體工廠，透過工廠生產者取得具體工廠，把產出的人類放進List
-        for (String name : specialCharactersInitialMap.keySet()) {
-            concreteHumanList.add((ConcreteHuman) factoryProducer.createSpecificHumanByFactory(name, specialCharactersInitialMap.get(name)));
-        }
-
-        return "Specific human created";
-    }
 
     @GetMapping("/humans")
     @Operation(summary = "Peek humans", tags = {"Init"})
@@ -89,8 +82,10 @@ public class Controller {
     @Operation(summary = "Attack the armored titan using decorator pattern and chain of responsibility pattern", tags = {"Mission"})
     public String attackTheArmoredTitan() {
 
+        List<String> specialCorpsNames = List.of("Hanji", "Mikasa", "Jean", "Connie");
+
         List<ConcreteHuman> specialCorps = concreteHumanList.stream()
-                .filter(human -> human.getName().equals("Hanji") || human.getName().equals("Mikasa") || human.getName().equals("Jean") || human.getName().equals("Connie"))
+                .filter(human -> specialCorpsNames.contains(human.getName()))
                 .toList();
 
         System.out.println("What equipment do we have?");
@@ -106,16 +101,19 @@ public class Controller {
         }
 
 //        3.使用責任鏈模式(Chain of Responsibility Pattern)讓調查兵團的人先攻及鎧甲入人的左右臉頰肌肉，再由Mikasa進入鎧甲巨人的嘴巴攻擊咽喉
-        AttackArmoredTitanHandler jeanAttackHandler = new ConcreteJeanAttackArmoredTitanHandler();
-        AttackArmoredTitanHandler connieAttackHandler = new ConcreteConnieAttackArmoredTitanHandler();
-        AttackArmoredTitanHandler hanjiAttackHandler = new ConcreteHanjiAttackArmoredTitanHandler();
-        AttackArmoredTitanHandler mikasaAttackHandler = new ConcreteMikasaAttackArmoredTitanHandler();
+        List<AttackArmoredTitanHandler> handlers = new ArrayList<>();
+        handlers.add(new ConcreteJeanAttackArmoredTitanHandler());
+        handlers.add(new ConcreteConnieAttackArmoredTitanHandler());
+        handlers.add(new ConcreteHanjiAttackArmoredTitanHandler());
+        handlers.add(new ConcreteMikasaAttackArmoredTitanHandler());
 
-        jeanAttackHandler.setNextHandler(connieAttackHandler);
-        connieAttackHandler.setNextHandler(hanjiAttackHandler);
-        hanjiAttackHandler.setNextHandler(mikasaAttackHandler);
+        for (int i = 0; i < handlers.size() - 1; i++) {
+            handlers.get(i).setNextHandler(handlers.get(i + 1));
+        }
 
-        jeanAttackHandler.handleAttack(decoratedHumans);
+        printDivider();
+        System.out.println("Attack the Armored Titan");
+        handlers.get(0).handleAttack(decoratedHumans);
 
         return "Armored Titan has been defeated";
 
@@ -130,20 +128,13 @@ public class Controller {
         ConcreteHuman beastTitan = concreteHumanList.stream()
                 .filter(human -> human.getName().equals("Zeke"))
                 .findFirst()
-                .orElse(
-                        new ConcreteHuman()
-                                .setUuid(java.util.UUID.randomUUID())
-                                .setName("Zeke")
-                                .setAbility("Beast Titan")
-                                .setTitanType(TitanType.BEAST_TITAN)
-                                .setBloodType(null)
-                                .setState(new HumanState())
-                );
+                .orElse(null);
 
 //        2. 開始進攻
+        assert beastTitan != null;
         System.out.println(beastTitan.getName() + " is attacking Midde East");
         System.out.println("All the Aldians have been dropped out from the plane to middle east army's territory");
-
+        printDivider();
 //        3. 使用狀態模式(State Pattern)讓吉克在巨人狀態下攻擊
         beastTitan.transform(TransformSignal.TITAN.getValue());
 
@@ -152,15 +143,15 @@ public class Controller {
         beastTitan.getState().setAttackStrategy(new BeastTitanShoutsStrategy());
         System.out.println(beastTitan.attack());
         System.out.println("Middle East army has been defeated, the territory is now under Marley's control");
-
+        printDivider();
 //        strategy 2
         beastTitan.getState().setAttackStrategy(new BeastTitanThrowsStrategy());
         System.out.println(beastTitan.attack());
         System.out.println("Middle East navy has been defeated, the war is over");
-
+        printDivider();
 //        5. 使用狀態模式(State Pattern)讓吉克變回人類
         beastTitan.transform(TransformSignal.HUMAN.getValue());
-
+        printDivider();
         return "Beast Titan has finished his mission";
     }
 
@@ -172,22 +163,14 @@ public class Controller {
         ConcreteHuman beastTitan = concreteHumanList.stream()
                 .filter(human -> human.getName().equals("Zeke"))
                 .findFirst()
-                .orElse(
-                        new ConcreteHuman()
-                                .setUuid(java.util.UUID.randomUUID())
-                                .setName("Zeke")
-                                .setAbility("Beast Titan")
-                                .setTitanType(TitanType.BEAST_TITAN)
-                                .setBloodType(null)
-                                .setState(new HumanState())
-                );
+                .orElse(null );
 //        1.2 建立10個純潔的艾爾迪亞人
-        List<ConcreteHuman> pureTitans = new ArrayList<>();
-        for (int i = 1; i <= 10; i++) {
-            pureTitans.add((ConcreteHuman) new FactoryProducer().createNormalErdianHumanByFactory(Integer.toString(i)));
-        }
+        List<ConcreteHuman> pureTitans = IntStream.rangeClosed(1, 10)
+                .mapToObj(i -> (ConcreteHuman) new FactoryProducer().createNormalErdianHumanByFactory(Integer.toString(i)))
+                .toList();
 
 //        2. 吉克變成巨人
+        assert beastTitan != null;
         beastTitan.transform(TransformSignal.TITAN.getValue());
 //        3. 吉克使用吶喊技能，讓人類變成純潔巨人
         beastTitan.getState().setAttackStrategy(new BeastTitanShoutsStrategy());
@@ -223,13 +206,19 @@ public class Controller {
 //          2.1 艾爾文下令調查兵團發動突襲
         erwin.setCommand(attackCommand);
         erwin.executeCommand();
+        printDivider();
 //          2.2 艾爾文下令調查兵團發動煙霧彈
         erwin.setCommand(smokeSignalCommand);
         erwin.executeCommand();
+        printDivider();
 //          2.3 艾爾文下令Levi隻身繞後偷襲野獸巨人
         erwin.setCommand(attackFromBehindCommand);
         erwin.executeCommand();
 
+    }
+
+    public void printDivider() {
+        System.out.println("----------------------------------");
     }
 
 }
