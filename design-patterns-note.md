@@ -1,4 +1,4 @@
-## 甚麼是Design pattern?
+## 甚麼是Design pattern??
 
 ![Alt text](image.png)
 
